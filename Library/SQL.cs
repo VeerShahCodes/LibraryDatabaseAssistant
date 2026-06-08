@@ -120,6 +120,39 @@ namespace Library
         {
             id = -1;
             string query = "usp_RegisterMember";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@legalName", name);
+
+            bool success = ExecuteNonQuery(cmd);
+            if(success)
+            {
+                GetMemberID(name, out id);
+            }
+
+            return success;
+
+        }
+
+        public bool AddBookToLibrary(int library_id, int book_id)
+        {
+            string query = "usp_AddBookToLibrary";
+            SqlCommand cmd = new SqlCommand(query);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@book_id", book_id);
+            cmd.Parameters.AddWithValue("@library_id", library_id);
+
+            return ExecuteNonQuery(cmd);
+        }
+
+        public bool GetMemberID(string name, out object id)
+        {
+            id = -1;
+            string query = "usp_GetMemberID";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@legalName", name);
+            return ExecuteScalar(cmd, out id);
         }
 
         public bool GetBookID(string title, string author, string genre, out object id)
