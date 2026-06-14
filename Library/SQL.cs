@@ -134,21 +134,79 @@ namespace Library
 
         }
 
-        public bool AddBookToLibrary(int library_id, int book_id)
+        public bool AddBookToLibrary(int library_id, int book_id, out object id, out object quantity)
         {
             string query = "usp_AddBookToLibrary";
-            SqlCommand cmd = new SqlCommand(query);
+            SqlCommand cmd = new SqlCommand(query, connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@book_id", book_id);
             cmd.Parameters.AddWithValue("@library_id", library_id);
 
-            return ExecuteNonQuery(cmd);
+            bool success = ExecuteNonQuery(cmd);
+
+            if(success)
+            {
+                DataTable table;
+                GetLibraryBookInfo(library_id, book_id, out table);
+                id = table.Rows[0][0];
+                quantity = table.Rows[0][1];
+                return true;
+            }
+            id = -1;
+            quantity = -1;
+            return false;
         }
 
+        public bool GetLibraryBookInfo(int library_id, int book_id, out DataTable table)
+        {
+            string query = "usp_GetLibraryBookInfo";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@book_id", book_id);
+            cmd.Parameters.AddWithValue("@library_id", library_id);
+
+            return DataAdapter(query, out table);
+
+
+        }
+
+        public bool GetMemberLibraryBookID(int library_id, int book_id, int member_id, DateTime toc, out object id)
+        {
+            string query = "usp_GetMemberLibraryBookID";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@library_id", library_id);
+            cmd.Parameters.AddWithValue("@book_id", book_id);
+            cmd.Parameters.AddWithValue("@member_id", member_id);
+            cmd.Parameters.AddWithValue("@time_of_checkout", toc);
+
+            return ExecuteScalar(cmd, out id);
+        }
+
+        public bool CheckoutBook(int book_id, int library_id, int member_id, out object id)
+        {
+            DateTime now = DateTime.Now;
+            string query = "usp_CheckoutBook";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@member_id", member_id);
+            cmd.Parameters.AddWithValue("@book_id", book_id);
+            cmd.Parameters.AddWithValue("@library_id", library_id);
+            cmd.Parameters.AddWithValue("@time_of_checkout", now);
+
+            bool success = ExecuteNonQuery(cmd);
+            if(success)
+            {
+                GetMemberLibraryBookID(library_id, book_id, member_id, now, out id);
+                return true;
+            }
+            id = -1;
+            return success;
+        }
         public bool GetMemberID(string name, out object id)
         {
             id = -1;
-            string query = "usp_GetMemberID";
+            string query = "usp_GetMemberId";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@legalName", name);
@@ -176,5 +234,19 @@ namespace Library
             cmd.Parameters.AddWithValue("@location", location);
             return ExecuteScalar(cmd, out id);
         }
+
+        public void GetAvailableBooksByLibrary(int library_id)
+        {
+            string query = "usp_GetAvailableBooksByLibrary";
+            SqlCommand cmd = new SqlCommand(query, connection);
+
+        }
+        public void GetBooksByAuthorFromLibrary () { }
+        public void GetBooksByGenreFromLibrary () { }
+        public void GetCheckedOutBooksByLibrary() { }
+        public void GetCheckedOutBooksByMember() { }
+        public void GetLibrariesWithBook () { }
+        public void GetMemberInfoByID () { }
+        public void ReturnBook () { }
     }
 }
