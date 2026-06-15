@@ -52,7 +52,7 @@ namespace Library
             }
         }
 
-        private bool DataAdapter(string query, out DataTable dataTable)
+        private bool DataAdapter(SqlCommand cmd, out DataTable dataTable)
         {
             dataTable = new DataTable();
             try
@@ -60,13 +60,12 @@ namespace Library
                 using (SqlConnection connection = new SqlConnection(ConnectionString))
                 {
                     connection.Open();
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
-                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                        {
-                            adapter.Fill(dataTable);
-                        }
+                        adapter.Fill(dataTable);
                     }
+                    
                 }
                 return true;
             }
@@ -165,7 +164,7 @@ namespace Library
             cmd.Parameters.AddWithValue("@book_id", book_id);
             cmd.Parameters.AddWithValue("@library_id", library_id);
 
-            return DataAdapter(query, out table);
+            return DataAdapter(cmd, out table);
 
 
         }
@@ -235,18 +234,123 @@ namespace Library
             return ExecuteScalar(cmd, out id);
         }
 
-        public void GetAvailableBooksByLibrary(int library_id)
+        public bool GetAvailableBooksByLibrary(int library_id, out List<int> ids)
         {
+            ids = new List<int>();
             string query = "usp_GetAvailableBooksByLibrary";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@library_id", library_id);
+            DataTable table;
+            bool success = DataAdapter(cmd, out table);
+            if(success)
+            {
+                for(int i = 0; i <  table.Rows.Count; i++)
+                {
+                    ids.Add((int)table.Rows[i][0]);
+                }
+                return true;
+            }
+            return false;
+        }
+        public bool GetBookByID(int book_id, string title, string author, string genre)
+        {
+            string query = "usp_GetBookByID";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@book_id", book_id);
+
+            DataTable table;
+            bool success = DataAdapter(cmd, out table);
+
+            if(success)
+            {
+                title = (string)table.Rows[0][0];
+                author = (string)table.Rows[0][1];
+                genre = (string)table.Rows[0][2];
+                return true;
+            }
+            return false;
+        }
+        public void GetBooksByAuthorFromLibrary (string author, int library_id)
+        {
+            string query = "usp_GetBooksByAuthorFromLibrary";
             SqlCommand cmd = new SqlCommand(query, connection);
 
         }
-        public void GetBooksByAuthorFromLibrary () { }
         public void GetBooksByGenreFromLibrary () { }
         public void GetCheckedOutBooksByLibrary() { }
         public void GetCheckedOutBooksByMember() { }
-        public void GetLibrariesWithBook () { }
-        public void GetMemberInfoByID () { }
-        public void ReturnBook () { }
+        public bool GetLibrariesWithBook (int book_id, out List<int> ids) 
+        {
+            ids = new List<int>();
+            string query = "usp_GetLibrariesWithBook";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@book_id", book_id);
+
+            bool success = DataAdapter(cmd, out DataTable table);
+            if(success)
+            {
+                for (int i = 0; i < table.Rows.Count; i++)
+                {
+                    ids.Add((int)table.Rows[i][0]);
+                }
+                
+            }
+            return success;
+        }
+
+        public bool GetLibraryByID(int library_id, out string name)
+        {
+            string query = "usp_GetLibraryByID";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@library_id", library_id);
+            object val;
+            bool success = ExecuteScalar(cmd, out val);
+            name = (string)val;
+            return success;
+        }
+        public bool GetMemberInfoByID (int id, out string legalName)
+        {
+            string query = "usp_GetMemberInfoByID";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@member_id", id);
+            object val;
+            bool success = ExecuteScalar(cmd, out val);
+            if(success)
+            {
+                legalName = (string)val;
+                return true;
+            }
+            legalName = "";
+            return false;
+
+        }
+        public bool ReturnBook (int member_id, int book_id, int library_id, out int id, out int quantity) 
+        {
+            id = -1;
+            quantity = -1;
+
+            string query = "usp_ReturnBook";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@member_id", member_id);
+            cmd.Parameters.AddWithValue("@book_id", book_id);
+            cmd.Parameters.AddWithValue("@library_id", library_id);
+
+            bool success = ExecuteNonQuery(cmd);
+
+            if(success)
+            {
+                DataTable table;
+                GetLibraryBookInfo(library_id, book_id, out table);
+
+                id = (int)table.Rows[0][0];
+                quantity = (int)table.Rows[0][1];
+                return true;
+            }
+            return false;
+        }
     }
 }
