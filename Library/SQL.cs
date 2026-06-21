@@ -122,7 +122,7 @@ namespace Library
             string query = "usp_RegisterMember";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@legalName", name);
+            cmd.Parameters.AddWithValue("@name", name);
 
             bool success = ExecuteNonQuery(cmd);
             if(success)
@@ -146,10 +146,9 @@ namespace Library
 
             if(success)
             {
-                DataTable table;
-                GetLibraryBookInfo(library_id, book_id, out table);
-                id = table.Rows[0][0];
-                quantity = table.Rows[0][1];
+                GetLibraryBookInfo(library_id, book_id, out LibraryBook book);
+                id = book.Id;
+                quantity = book.Quantity;
                 return true;
             }
             id = -1;
@@ -157,7 +156,7 @@ namespace Library
             return false;
         }
 
-        public bool GetLibraryBookInfo(int library_id, int book_id, out DataTable table)
+        public bool GetLibraryBookInfo(int library_id, int book_id, out LibraryBook book)
         {
             string query = "usp_GetLibraryBookInfo";
             SqlCommand cmd = new SqlCommand(query, connection);
@@ -165,7 +164,13 @@ namespace Library
             cmd.Parameters.AddWithValue("@book_id", book_id);
             cmd.Parameters.AddWithValue("@library_id", library_id);
 
-            return DataAdapter(cmd, out table);
+            if(DataAdapter(cmd, out DataTable table))
+            {
+                book = new LibraryBook((int)table.Rows[0][0], library_id, book_id, (int)table.Rows[0][1]);
+                return true;
+            }
+            book = null;
+            return false;
 
 
         }
@@ -210,7 +215,8 @@ namespace Library
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@legalName", name);
-            return ExecuteScalar(cmd, out id);
+            bool success = ExecuteScalar(cmd, out id);
+            return success;
         }
 
         public bool GetBookID(string title, string author, string genre, out object id)
@@ -364,6 +370,8 @@ namespace Library
             ids = new List<int>();
             string query = "usp_GetLibrariesWithBook";
             SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
             cmd.Parameters.AddWithValue("@book_id", book_id);
 
             bool success = DataAdapter(cmd, out DataTable table);
@@ -393,6 +401,7 @@ namespace Library
         {
             string query = "usp_GetMemberInfoByID";
             SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@member_id", id);
             object val;
             bool success = ExecuteScalar(cmd, out val);
@@ -405,6 +414,25 @@ namespace Library
             return false;
 
         }
+
+        public List<int> GetMembers()
+        {
+            List<int> list = new List<int>();
+            string query = "usp_GetMembers";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            DataTable table;
+            bool success = DataAdapter(cmd, out table);
+
+            for(int i = 0; i < table.Rows.Count; i++)
+            {
+                list.Add((int)table.Rows[i][0]);
+            }
+
+            return list;
+        }
+        
         public bool ReturnBook (int member_id, int book_id, int library_id, out int id, out int quantity) 
         {
             id = -1;
@@ -421,11 +449,10 @@ namespace Library
 
             if(success)
             {
-                DataTable table;
-                GetLibraryBookInfo(library_id, book_id, out table);
+                GetLibraryBookInfo(library_id, book_id, out LibraryBook book);
 
-                id = (int)table.Rows[0][0];
-                quantity = (int)table.Rows[0][1];
+                id = book.Id;
+                quantity = book.Quantity;
                 return true;
             }
             return false;
