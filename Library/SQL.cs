@@ -34,17 +34,18 @@ namespace Library
 
         private bool ExecuteScalar(SqlCommand cmd, out object result)
         {
-            result = null;
+      
             connection.Open();
             try
             {
                 result = cmd.ExecuteScalar();
-
+                
                 return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error executing query: {ex.Message}");
+                result = null;
                 return false;
             }
             finally
@@ -124,12 +125,8 @@ namespace Library
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@name", name);
 
-            bool success = ExecuteNonQuery(cmd);
-            if(success)
-            {
-                GetMemberID(name, out id);
-            }
-
+            bool success = ExecuteScalar(cmd, out id);
+            id = Convert.ToInt32(id);
             return success;
 
         }
@@ -210,7 +207,7 @@ namespace Library
         }
         public bool GetMemberID(string name, out object id)
         {
-            id = -1;
+            
             string query = "usp_GetMemberId";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.CommandType = CommandType.StoredProcedure;
