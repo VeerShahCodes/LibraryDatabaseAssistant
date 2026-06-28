@@ -106,13 +106,10 @@ namespace Library
             string query = "usp_RegisterNewLibrary";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@location", location);
+            cmd.Parameters.AddWithValue("@locationName", location);
 
-            bool success = ExecuteNonQuery(cmd);
-            if (success)
-            {
-                GetLibraryID(location, out id);
-            }
+            bool success = ExecuteScalar(cmd, out id);
+            id = Convert.ToInt32(id);
 
             return success;
         }
@@ -171,6 +168,26 @@ namespace Library
 
 
         }
+
+        public List<Models.Library> GetLibraries()
+        {
+            List<Models.Library> libraries = new List<Models.Library>();
+            string query = "usp_GetLibraries";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            bool success = DataAdapter(cmd, out DataTable table);
+            if(success)
+            {
+                for(int i = 0; i < table.Rows.Count; i++)
+                {
+                    libraries.Add(new Models.Library((int)table.Rows[i][0], (string)table.Rows[i][1]));
+                }
+            }
+
+            return libraries;
+        }
+        
 
         public bool GetMemberLibraryBookID(int library_id, int book_id, int member_id, DateTime toc, out object id)
         {
