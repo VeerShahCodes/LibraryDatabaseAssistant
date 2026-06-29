@@ -15,6 +15,7 @@ namespace Frontend
             registerMemberPanel.Visible = false;
             registerLibraryPanel.Visible = false;
             viewLibrariesPanel.Visible = false;
+            libraryInfoPanel.Visible = false;
             api = new API();
         }
 
@@ -92,8 +93,10 @@ namespace Frontend
 
             string location = clickedButton.Text;
 
-            sql.GetLibraryID(location, out object id);
+           // sql.GetLibraryID(location, out object id);
 
+            libraryInfoPanel.Visible = true;
+            libraryTitleLabel.Text = $"{location} Library";
 
         }
     }
