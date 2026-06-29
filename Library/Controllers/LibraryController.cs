@@ -10,7 +10,7 @@ namespace Library.Controllers
     [Route("[controller]")]
     public class LibraryController : ControllerBase
     {
-        SQL sql = new SQL("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\shahv\\source\\repos\\LibraryDatabaseAssistant\\DB\\Database1.mdf;Integrated Security=True");
+        SQL sql = new SQL("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"\\\\GMRDC1\\Folder Redirection\\Veer.Shah\\Documents\\Visual Studio 2022\\Projects\\SQLAPIs\\Library\\DB\\Database1.mdf\";Integrated Security=True");
 
         [HttpPost("AddBookToSystem")]
         public ActionResult AddBookToSystem(string title, string author, string genre)
@@ -31,9 +31,9 @@ namespace Library.Controllers
         {
             if(sql.RegisterNewLibrary(location, out object id))
             {
-                int intId = (int)id;
+               
 
-                return Ok(new Models.Library(intId, location));
+                return Ok(new Models.Library((int)id, location));
             }
             return BadRequest();
         }
@@ -71,6 +71,12 @@ namespace Library.Controllers
                 return Ok(book);
             }
             return BadRequest();
+        }
+
+        [HttpGet("GetLibraries")]
+        public ActionResult GetLibraries()
+        {
+            return Ok(sql.GetLibraries());
         }
 
         

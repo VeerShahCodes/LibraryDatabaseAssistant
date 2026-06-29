@@ -1,3 +1,5 @@
+using Library;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Net;
 
 namespace Frontend
@@ -5,11 +7,14 @@ namespace Frontend
     public partial class Form1 : Form
     {
         API api;
+        SQL sql;
         public Form1()
         {
             InitializeComponent();
             registerBookPanel.Visible = false;
             registerMemberPanel.Visible = false;
+            registerLibraryPanel.Visible = false;
+            viewLibrariesPanel.Visible = false;
             api = new API();
         }
 
@@ -46,6 +51,50 @@ namespace Frontend
 
             registerMemberPanel.Visible = false;
             homePanel.Visible = true;
+        }
+
+        private void bt_addLibrary_Click(object sender, EventArgs e)
+        {
+            homePanel.Visible = false;
+            registerLibraryPanel.Visible = true;
+        }
+
+        private void bt_registerLibrarySubmit_Click(object sender, EventArgs e)
+        {
+            string location = tb_libraryLocation.Text;
+
+            api.RegisterLibrary(location);
+
+            registerLibraryPanel.Visible = false;
+            homePanel.Visible = true;
+        }
+
+        private void bt_viewLibraries_Click(object sender, EventArgs e)
+        {
+            homePanel.Visible = false;
+            viewLibrariesPanel.Visible = true;
+            var libraries = api.GetLibraries();
+            for(int i = 0; i < libraries.Count; i++)
+            {
+                Button button = new Button();
+                button.BackColor = SystemColors.Desktop;
+                button.ForeColor = SystemColors.ButtonFace;
+                button.Text = libraries[i].location;
+                button.Font = new Font(FontFamily.GenericSerif, 9);
+                button.Click += Button_Click;
+                libraryViewerFLP.Controls.Add(button);
+            }
+        }
+
+        private void Button_Click(object? sender, EventArgs e)
+        {
+            Button clickedButton = sender as Button;
+
+            string location = clickedButton.Text;
+
+            sql.GetLibraryID(location, out object id);
+
+
         }
     }
 }
