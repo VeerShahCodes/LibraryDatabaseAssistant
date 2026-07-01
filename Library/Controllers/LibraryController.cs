@@ -79,6 +79,12 @@ namespace Library.Controllers
             return Ok(sql.GetLibraries());
         }
 
+        [HttpGet("GetMembers")]
+        public ActionResult GetMembers()
+        {
+            return Ok(sql.GetMembers());
+        }
+
         
     }
 }

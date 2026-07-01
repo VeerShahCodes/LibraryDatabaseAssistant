@@ -50,10 +50,12 @@
             libraryViewerFLP = new FlowLayoutPanel();
             placeholderLibraryButton = new Button();
             libraryInfoPanel = new Panel();
+            bt_checkoutBook = new Button();
+            bt_addLibraryBook = new Button();
             bt_viewCheckedOutBooks = new Button();
             libraryTitleLabel = new Label();
-            bt_addLibraryBook = new Button();
-            bt_checkoutBook = new Button();
+            viewMembersPanel = new Panel();
+            memberViewerFLP = new FlowLayoutPanel();
             homePanel.SuspendLayout();
             registerBookPanel.SuspendLayout();
             registerMemberPanel.SuspendLayout();
@@ -61,6 +63,7 @@
             viewLibrariesPanel.SuspendLayout();
             libraryViewerFLP.SuspendLayout();
             libraryInfoPanel.SuspendLayout();
+            viewMembersPanel.SuspendLayout();
             SuspendLayout();
             // 
             // introLabel
@@ -99,6 +102,7 @@
             bt_viewMembers.TabIndex = 5;
             bt_viewMembers.Text = "View Members";
             bt_viewMembers.UseVisualStyleBackColor = false;
+            bt_viewMembers.Click += bt_viewMembers_Click;
             // 
             // bt_viewLibraries
             // 
@@ -328,6 +332,30 @@
             libraryInfoPanel.Size = new Size(800, 451);
             libraryInfoPanel.TabIndex = 6;
             // 
+            // bt_checkoutBook
+            // 
+            bt_checkoutBook.BackColor = SystemColors.Desktop;
+            bt_checkoutBook.ForeColor = SystemColors.ButtonFace;
+            bt_checkoutBook.Location = new Point(612, 406);
+            bt_checkoutBook.Margin = new Padding(3, 4, 3, 4);
+            bt_checkoutBook.Name = "bt_checkoutBook";
+            bt_checkoutBook.Size = new Size(119, 31);
+            bt_checkoutBook.TabIndex = 3;
+            bt_checkoutBook.Text = "Checkout Book";
+            bt_checkoutBook.UseVisualStyleBackColor = false;
+            // 
+            // bt_addLibraryBook
+            // 
+            bt_addLibraryBook.BackColor = SystemColors.Desktop;
+            bt_addLibraryBook.ForeColor = SystemColors.ButtonFace;
+            bt_addLibraryBook.Location = new Point(311, 406);
+            bt_addLibraryBook.Margin = new Padding(3, 4, 3, 4);
+            bt_addLibraryBook.Name = "bt_addLibraryBook";
+            bt_addLibraryBook.Size = new Size(119, 31);
+            bt_addLibraryBook.TabIndex = 2;
+            bt_addLibraryBook.Text = "Add Book";
+            bt_addLibraryBook.UseVisualStyleBackColor = false;
+            // 
             // bt_viewCheckedOutBooks
             // 
             bt_viewCheckedOutBooks.BackColor = SystemColors.Desktop;
@@ -352,41 +380,35 @@
             libraryTitleLabel.TextAlign = ContentAlignment.MiddleCenter;
             libraryTitleLabel.Visible = false;
             // 
-            // bt_addLibraryBook
+            // viewMembersPanel
             // 
-            bt_addLibraryBook.BackColor = SystemColors.Desktop;
-            bt_addLibraryBook.ForeColor = SystemColors.ButtonFace;
-            bt_addLibraryBook.Location = new Point(311, 406);
-            bt_addLibraryBook.Margin = new Padding(3, 4, 3, 4);
-            bt_addLibraryBook.Name = "bt_addLibraryBook";
-            bt_addLibraryBook.Size = new Size(119, 31);
-            bt_addLibraryBook.TabIndex = 2;
-            bt_addLibraryBook.Text = "Add Book";
-            bt_addLibraryBook.UseVisualStyleBackColor = false;
+            viewMembersPanel.BackColor = SystemColors.Desktop;
+            viewMembersPanel.Controls.Add(memberViewerFLP);
+            viewMembersPanel.Dock = DockStyle.Fill;
+            viewMembersPanel.Location = new Point(0, 0);
+            viewMembersPanel.Name = "viewMembersPanel";
+            viewMembersPanel.Size = new Size(800, 451);
+            viewMembersPanel.TabIndex = 6;
             // 
-            // bt_checkoutBook
+            // memberViewerFLP
             // 
-            bt_checkoutBook.BackColor = SystemColors.Desktop;
-            bt_checkoutBook.ForeColor = SystemColors.ButtonFace;
-            bt_checkoutBook.Location = new Point(612, 406);
-            bt_checkoutBook.Margin = new Padding(3, 4, 3, 4);
-            bt_checkoutBook.Name = "bt_checkoutBook";
-            bt_checkoutBook.Size = new Size(119, 31);
-            bt_checkoutBook.TabIndex = 3;
-            bt_checkoutBook.Text = "Checkout Book";
-            bt_checkoutBook.UseVisualStyleBackColor = false;
+            memberViewerFLP.Location = new Point(36, 20);
+            memberViewerFLP.Name = "memberViewerFLP";
+            memberViewerFLP.Size = new Size(732, 396);
+            memberViewerFLP.TabIndex = 0;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 451);
-            Controls.Add(libraryInfoPanel);
+            Controls.Add(viewMembersPanel);
             Controls.Add(homePanel);
             Controls.Add(registerBookPanel);
             Controls.Add(registerMemberPanel);
             Controls.Add(registerLibraryPanel);
             Controls.Add(viewLibrariesPanel);
+            Controls.Add(libraryInfoPanel);
             Name = "Form1";
             Text = "Form1";
             homePanel.ResumeLayout(false);
@@ -400,6 +422,7 @@
             viewLibrariesPanel.ResumeLayout(false);
             libraryViewerFLP.ResumeLayout(false);
             libraryInfoPanel.ResumeLayout(false);
+            viewMembersPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -431,5 +454,7 @@
         private Button bt_viewCheckedOutBooks;
         private Button bt_checkoutBook;
         private Button bt_addLibraryBook;
+        private Panel viewMembersPanel;
+        private FlowLayoutPanel memberViewerFLP;
     }
 }

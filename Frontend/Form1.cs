@@ -1,6 +1,7 @@
 using Library;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Net;
+using System.Linq;
 
 namespace Frontend
 {
@@ -16,6 +17,7 @@ namespace Frontend
             registerLibraryPanel.Visible = false;
             viewLibrariesPanel.Visible = false;
             libraryInfoPanel.Visible = false;
+            viewMembersPanel.Visible = false;
             api = new API();
         }
 
@@ -75,13 +77,14 @@ namespace Frontend
             homePanel.Visible = false;
             viewLibrariesPanel.Visible = true;
             var libraries = api.GetLibraries();
-            for(int i = 0; i < libraries.Count; i++)
+            for (int i = 0; i < libraries.Count; i++)
             {
                 Button button = new Button();
                 button.BackColor = SystemColors.Desktop;
                 button.ForeColor = SystemColors.ButtonFace;
                 button.Text = libraries[i].location;
-                button.Font = new Font(FontFamily.GenericSerif, 9);
+                button.Font = new Font(FontFamily.GenericSerif, 20);
+                button.AutoSize = true;
                 button.Click += Button_Click;
                 libraryViewerFLP.Controls.Add(button);
             }
@@ -93,11 +96,44 @@ namespace Frontend
 
             string location = clickedButton.Text;
 
-           // sql.GetLibraryID(location, out object id);
-
+            // sql.GetLibraryID(location, out object id);
+            viewLibrariesPanel.Visible = false;
             libraryInfoPanel.Visible = true;
+            libraryTitleLabel.Visible = true;
             libraryTitleLabel.Text = $"{location} Library";
 
+        }
+
+        private void bt_viewMembers_Click(object sender, EventArgs e)
+        {
+            homePanel.Visible = false;
+            viewMembersPanel.Visible = true;
+            var members = api.GetMembers();
+            if (members == null || members.Count == 0)
+                return;
+
+            memberViewerFLP.Controls.Clear();
+
+            var sorted = members.OrderBy(m => m.name, StringComparer.OrdinalIgnoreCase).ToList();
+
+            for (int i = 0; i < sorted.Count; i++)
+            {
+                Button button = new Button();
+                button.BackColor = SystemColors.Desktop;
+                button.ForeColor = SystemColors.ButtonFace;
+                button.Text = sorted[i].name;
+                button.Font = new Font(FontFamily.GenericSerif, 9);
+                button.AutoSize = true;
+                button.Click += MemberButton_Click;
+                memberViewerFLP.Controls.Add(button);
+            }
+        }
+
+        private void MemberButton_Click(object? sender, EventArgs e)
+        {
+            Button clickedButton = sender as Button;
+
+            string name = clickedButton.Text;
         }
     }
 }

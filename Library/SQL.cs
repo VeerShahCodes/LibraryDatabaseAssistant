@@ -429,9 +429,9 @@ namespace Library
 
         }
 
-        public List<int> GetMembers()
+        public List<Member> GetMembers()
         {
-            List<int> list = new List<int>();
+            List<Member> list = new List<Member>();
             string query = "usp_GetMembers";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -441,7 +441,7 @@ namespace Library
 
             for(int i = 0; i < table.Rows.Count; i++)
             {
-                list.Add((int)table.Rows[i][0]);
+                list.Add(new Member((int)table.Rows[i][0], (string)table.Rows[i][1]));
             }
 
             return list;

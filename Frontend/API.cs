@@ -79,5 +79,24 @@ namespace Frontend
                 }
             }
         }
+
+        public List<Member> GetMembers()
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    string result = client.DownloadString($"http://localhost:5062/Library/GetMembers?");
+                    List<Member> members = JsonSerializer.Deserialize<List<Member>>(result);
+                    Console.WriteLine($"response from api: {result}");
+                    return members;
+                }
+                catch (WebException exception)
+                {
+                    Console.WriteLine($"Error: {exception.Message}");
+                    return null;
+                }
+            }
+        }
     }
 }
