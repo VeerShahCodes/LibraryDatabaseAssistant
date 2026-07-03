@@ -56,6 +56,8 @@
             libraryTitleLabel = new Label();
             viewMembersPanel = new Panel();
             memberViewerFLP = new FlowLayoutPanel();
+            memberInfoPanel = new Panel();
+            memberNameLabel = new Label();
             homePanel.SuspendLayout();
             registerBookPanel.SuspendLayout();
             registerMemberPanel.SuspendLayout();
@@ -64,6 +66,7 @@
             libraryViewerFLP.SuspendLayout();
             libraryInfoPanel.SuspendLayout();
             viewMembersPanel.SuspendLayout();
+            memberInfoPanel.SuspendLayout();
             SuspendLayout();
             // 
             // introLabel
@@ -397,18 +400,41 @@
             memberViewerFLP.Size = new Size(732, 396);
             memberViewerFLP.TabIndex = 0;
             // 
+            // memberInfoPanel
+            // 
+            memberInfoPanel.BackColor = SystemColors.Desktop;
+            memberInfoPanel.Controls.Add(memberNameLabel);
+            memberInfoPanel.Dock = DockStyle.Fill;
+            memberInfoPanel.Location = new Point(0, 0);
+            memberInfoPanel.Name = "memberInfoPanel";
+            memberInfoPanel.Size = new Size(800, 451);
+            memberInfoPanel.TabIndex = 1;
+            // 
+            // memberNameLabel
+            // 
+            memberNameLabel.AutoSize = true;
+            memberNameLabel.Font = new Font("Segoe UI", 20F);
+            memberNameLabel.ForeColor = SystemColors.ButtonFace;
+            memberNameLabel.Location = new Point(341, 16);
+            memberNameLabel.Name = "memberNameLabel";
+            memberNameLabel.Size = new Size(109, 46);
+            memberNameLabel.TabIndex = 0;
+            memberNameLabel.Text = "Name";
+            memberNameLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 451);
+            Controls.Add(libraryInfoPanel);
+            Controls.Add(memberInfoPanel);
             Controls.Add(viewMembersPanel);
             Controls.Add(homePanel);
             Controls.Add(registerBookPanel);
             Controls.Add(registerMemberPanel);
             Controls.Add(registerLibraryPanel);
             Controls.Add(viewLibrariesPanel);
-            Controls.Add(libraryInfoPanel);
             Name = "Form1";
             Text = "Form1";
             homePanel.ResumeLayout(false);
@@ -423,6 +449,8 @@
             libraryViewerFLP.ResumeLayout(false);
             libraryInfoPanel.ResumeLayout(false);
             viewMembersPanel.ResumeLayout(false);
+            memberInfoPanel.ResumeLayout(false);
+            memberInfoPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -456,5 +484,7 @@
         private Button bt_addLibraryBook;
         private Panel viewMembersPanel;
         private FlowLayoutPanel memberViewerFLP;
+        private Panel memberInfoPanel;
+        private Label memberNameLabel;
     }
 }

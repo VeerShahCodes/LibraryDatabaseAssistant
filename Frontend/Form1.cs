@@ -18,6 +18,7 @@ namespace Frontend
             viewLibrariesPanel.Visible = false;
             libraryInfoPanel.Visible = false;
             viewMembersPanel.Visible = false;
+            memberInfoPanel.Visible = false;
             api = new API();
         }
 
@@ -134,6 +135,9 @@ namespace Frontend
             Button clickedButton = sender as Button;
 
             string name = clickedButton.Text;
+            memberInfoPanel.Visible = true;
+            viewMembersPanel.Visible = false;
+            memberNameLabel.Text = name;
         }
     }
 }
