@@ -1,7 +1,8 @@
 using Library;
+using Library.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Net;
 using System.Linq;
+using System.Net;
 
 namespace Frontend
 {
@@ -9,6 +10,8 @@ namespace Frontend
     {
         API api;
         SQL sql;
+        int currentLibrary = -1;
+        int currentBook = -1;
         public Form1()
         {
             InitializeComponent();
@@ -19,6 +22,7 @@ namespace Frontend
             libraryInfoPanel.Visible = false;
             viewMembersPanel.Visible = false;
             memberInfoPanel.Visible = false;
+            addBookToLibraryPanel.Visible = false;
             api = new API();
         }
 
@@ -86,16 +90,18 @@ namespace Frontend
                 button.Text = libraries[i].location;
                 button.Font = new Font(FontFamily.GenericSerif, 20);
                 button.AutoSize = true;
+                button.Tag = libraries[i].id;
                 button.Click += Button_Click;
                 libraryViewerFLP.Controls.Add(button);
             }
         }
 
-        private void Button_Click(object? sender, EventArgs e)
+        private void Button_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
 
             string location = clickedButton.Text;
+            currentLibrary = (int)clickedButton.Tag;
 
             // sql.GetLibraryID(location, out object id);
             viewLibrariesPanel.Visible = false;
@@ -138,6 +144,46 @@ namespace Frontend
             memberInfoPanel.Visible = true;
             viewMembersPanel.Visible = false;
             memberNameLabel.Text = name;
+        }
+
+        private void bt_addLibraryBook_Click(object sender, EventArgs e)
+        {
+            addBookToLibraryPanel.Visible = true;
+            libraryInfoPanel.Visible = false;
+            booksToAddToLibraryFLP.Controls.Clear();
+            var books = api.GetBooks();
+            if (books == null || books.Count == 0)
+                return;
+            var sorted = books.OrderBy(m => m.title, StringComparer.OrdinalIgnoreCase).ToList();
+
+            for (int i = 0; i < sorted.Count; i++)
+            {
+                Button button = new Button();
+                button.BackColor = SystemColors.Desktop;
+                button.ForeColor = SystemColors.ButtonFace;
+                button.Text = sorted[i].title;
+                button.Font = new Font(FontFamily.GenericSerif, 9);
+                button.AutoSize = true;
+                button.Tag = sorted[i].id;
+                button.Click += Book_Click;
+                booksToAddToLibraryFLP.Controls.Add(button);
+            }
+
+        }
+
+        private void Book_Click(object sender, EventArgs e)
+        {
+            Button ClickedButton = sender as Button;
+            addBookToLibraryPanel.Visible = false;
+            libraryInfoPanel.Visible = true;
+            currentBook = (int)ClickedButton.Tag;
+
+            api.AddBookToLibrary(currentBook, currentLibrary);
+        }
+
+        private void bt_checkoutBook_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

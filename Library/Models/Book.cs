@@ -2,17 +2,17 @@
 {
     public class Book
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Genre { get; set; }
-        public string Author { get; set; }
+        public int id { get; set; }
+        public string title { get; set; }
+        public string genre { get; set; }
+        public string author { get; set; }
 
         public Book(int id, string title, string genre, string author)
         {
-            Id = id;
-            Title = title;
-            Genre = genre;
-            Author = author;
+            this.id = id;
+            this.title = title;
+            this.genre = genre;
+            this.author = author;
         }
     }
 }

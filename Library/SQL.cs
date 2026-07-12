@@ -471,5 +471,23 @@ namespace Library
             }
             return false;
         }
+
+        public List<Book> GetBooks()
+        {
+            List<Book> books = new List<Book>();
+            string query = "usp_GetBooks";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            DataTable table;
+            DataAdapter(cmd, out table);
+
+            for(int i = 0; i < table.Rows.Count; i++)
+            {
+                books.Add(new Book((int)table.Rows[i][0], (string)table.Rows[i][1], (string)table.Rows[i][2], (string)table.Rows[i][3]));
+            }
+
+            return books;
+        }
     }
 }

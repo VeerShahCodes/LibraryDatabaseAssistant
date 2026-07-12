@@ -11,6 +11,7 @@ namespace Frontend
     {
         public void AddBookToSystem(string title, string author, string genre)
         {
+
             using (WebClient client = new WebClient())
             {
                 try
@@ -95,6 +96,43 @@ namespace Frontend
                 {
                     Console.WriteLine($"Error: {exception.Message}");
                     return null;
+                }
+            }
+        }
+
+        public List<Book> GetBooks()
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    string result = client.DownloadString($"http://localhost:5062/Library/GetBooks?");
+                    List<Book> books = JsonSerializer.Deserialize<List<Book>>(result);
+                    Console.WriteLine($"reponse from api: {result}");
+                    return books;
+                }
+                catch (WebException exception)
+                {
+                    Console.WriteLine($"Error: {exception.Message}");
+                    return null;
+                }
+            }
+        }
+
+        public void AddBookToLibrary(int book_id, int library_id)
+        {
+
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    string result = client.UploadString($"http://localhost:5062/Library/AddBookToLibrary?library_id={library_id}&book_id={book_id}", ".");
+                    Console.WriteLine($"Response from API: {result}");
+                }
+                catch (WebException exception)
+                {
+                    Console.WriteLine($"Error: {exception.Message}");
                 }
             }
         }
