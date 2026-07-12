@@ -33,13 +33,13 @@ namespace Frontend
 
         }
 
-        private void bt_addBookSubmit_Click(object sender, EventArgs e)
+        private async void bt_addBookSubmit_Click(object sender, EventArgs e)
         {
             string title = tb_title.Text;
             string author = tb_author.Text;
             string genre = tb_genre.Text;
 
-            api.AddBookToSystem(title, author, genre);
+            await api.AddBookToSystem(title, author, genre);
 
             registerBookPanel.Visible = false;
             homePanel.Visible = true;
@@ -51,11 +51,11 @@ namespace Frontend
             registerMemberPanel.Visible = true;
         }
 
-        private void bt_registerMemberSubmit_Click(object sender, EventArgs e)
+        private async void bt_registerMemberSubmit_Click(object sender, EventArgs e)
         {
             string name = tb_name.Text;
 
-            api.RegisterMember(name);
+            await api.RegisterMember(name);
 
             registerMemberPanel.Visible = false;
             homePanel.Visible = true;
@@ -67,21 +67,34 @@ namespace Frontend
             registerLibraryPanel.Visible = true;
         }
 
-        private void bt_registerLibrarySubmit_Click(object sender, EventArgs e)
+        private async void bt_registerLibrarySubmit_Click(object sender, EventArgs e)
         {
+            bt_registerLibrarySubmit.Enabled = false;
+
             string location = tb_libraryLocation.Text;
+            try
+            {
+                await api.RegisterLibrary(location);
+            }
+            catch (Exception ex)
+            {
 
-            api.RegisterLibrary(location);
+            }
+            finally
+            {
+                bt_registerLibrarySubmit.Enabled = true;
 
-            registerLibraryPanel.Visible = false;
-            homePanel.Visible = true;
+                registerLibraryPanel.Visible = false;
+                homePanel.Visible = true;                
+            }
+            
         }
 
-        private void bt_viewLibraries_Click(object sender, EventArgs e)
+        private async void bt_viewLibraries_Click(object sender, EventArgs e)
         {
             homePanel.Visible = false;
             viewLibrariesPanel.Visible = true;
-            var libraries = api.GetLibraries();
+            List<Library.Models.Library> libraries = await api.GetLibraries();
             for (int i = 0; i < libraries.Count; i++)
             {
                 Button button = new Button();
@@ -116,12 +129,12 @@ namespace Frontend
             homePanel.Visible = false;
             viewMembersPanel.Visible = true;
             var members = api.GetMembers();
-            if (members == null || members.Count == 0)
+            if (members == null || members.Result.Count == 0)
                 return;
 
             memberViewerFLP.Controls.Clear();
 
-            var sorted = members.OrderBy(m => m.name, StringComparer.OrdinalIgnoreCase).ToList();
+            var sorted = members.Result.OrderBy(m => m.name, StringComparer.OrdinalIgnoreCase).ToList();
 
             for (int i = 0; i < sorted.Count; i++)
             {
@@ -136,7 +149,7 @@ namespace Frontend
             }
         }
 
-        private void MemberButton_Click(object? sender, EventArgs e)
+        private void MemberButton_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
 
@@ -152,9 +165,9 @@ namespace Frontend
             libraryInfoPanel.Visible = false;
             booksToAddToLibraryFLP.Controls.Clear();
             var books = api.GetBooks();
-            if (books == null || books.Count == 0)
+            if (books == null || books.Result.Count == 0)
                 return;
-            var sorted = books.OrderBy(m => m.title, StringComparer.OrdinalIgnoreCase).ToList();
+            var sorted = books.Result.OrderBy(m => m.title, StringComparer.OrdinalIgnoreCase).ToList();
 
             for (int i = 0; i < sorted.Count; i++)
             {
@@ -165,20 +178,20 @@ namespace Frontend
                 button.Font = new Font(FontFamily.GenericSerif, 9);
                 button.AutoSize = true;
                 button.Tag = sorted[i].id;
-                button.Click += Book_Click;
+                button.Click += Button_Click;
                 booksToAddToLibraryFLP.Controls.Add(button);
             }
 
         }
 
-        private void Book_Click(object sender, EventArgs e)
+        private async Task Book_Click(object sender, EventArgs e)
         {
             Button ClickedButton = sender as Button;
             addBookToLibraryPanel.Visible = false;
             libraryInfoPanel.Visible = true;
             currentBook = (int)ClickedButton.Tag;
 
-            api.AddBookToLibrary(currentBook, currentLibrary);
+            await api.AddBookToLibrary(currentBook, currentLibrary);
         }
 
         private void bt_checkoutBook_Click(object sender, EventArgs e)
