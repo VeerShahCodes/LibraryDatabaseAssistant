@@ -91,6 +91,39 @@ namespace Library.Controllers
         {
             return Ok(sql.GetBooks());
         }
-        
+
+        [HttpGet("GetAvailableBooksByLibrary")]
+        public ActionResult GetAvailableBooksByLibrary(int library_id)
+        {
+            return Ok(sql.GetAvailableBooksByLibrary(library_id));
+        }
+
+        [HttpGet("GetBookById")]
+        public ActionResult GetBookById(int book_id)
+        {
+            if (sql.GetBookByID(book_id, out string title, out string author, out string genre))
+            {
+                Book book = new Book(book_id, title, genre, author);
+                return Ok(book);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
+
+        [HttpPost("CheckoutBook")]
+        public ActionResult CheckoutBook(int book_id, int member_id, int library_id)
+        {
+            if(sql.CheckoutBook(book_id, library_id, member_id, out object id))
+            {
+                return Ok(new MemberLibraryBook((int)id, member_id, library_id, book_id));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 }

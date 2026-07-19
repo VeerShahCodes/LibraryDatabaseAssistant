@@ -137,5 +137,63 @@ namespace Frontend
                 }
             }
         }
+
+        public async Task<List<LibraryBook>> GetAvailableBooksByLibrary(int library_id)
+        {
+            using (WebClient client = new WebClient())
+            {
+                List<LibraryBook> books = new List<LibraryBook>();
+                try
+                {
+                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetAvailableBooksByLibrary?library_id={library_id}");
+                    books = JsonSerializer.Deserialize<List<LibraryBook>>(result);
+                    Console.WriteLine($"reponse from api: {result}");
+                    return books;
+                }
+                catch
+                {
+
+                }
+                return books;
+            }
+        }
+
+        public async Task<Book> GetBookById(int book_id)
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetBookById?book_id={book_id}");
+                    Book book = JsonSerializer.Deserialize<Book>(result);
+                    Console.WriteLine($"reponse from api: {result}");
+                    return book;
+
+                }
+                catch
+                {
+
+                }
+   
+            }
+            return null;
+        }
+
+        public async Task CheckoutBook(int member_id, int book_id, int library_id)
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/CheckoutBook?book_id={book_id}&member_id={member_id}&library_id={library_id}", "a");
+                    Console.WriteLine($"Response from API: {result}");
+                }
+                catch (WebException exception)
+                {
+                    Console.WriteLine($"Error: {exception.Message}");
+                }
+            }
+        }
     }
 }

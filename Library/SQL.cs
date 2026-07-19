@@ -141,8 +141,8 @@ namespace Library
             if(success)
             {
                 GetLibraryBookInfo(library_id, book_id, out LibraryBook book);
-                id = book.Id;
-                quantity = book.Quantity;
+                id = book.id;
+                quantity = book.quantity;
                 return true;
             }
             id = -1;
@@ -255,9 +255,9 @@ namespace Library
             return ExecuteScalar(cmd, out id);
         }
 
-        public bool GetAvailableBooksByLibrary(int library_id, out List<int> ids)
+        public List<LibraryBook> GetAvailableBooksByLibrary(int library_id)
         {
-            ids = new List<int>();
+            List<LibraryBook> books = new List<LibraryBook>();
             string query = "usp_GetAvailableBooksByLibrary";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -268,13 +268,12 @@ namespace Library
             {
                 for(int i = 0; i <  table.Rows.Count; i++)
                 {
-                    ids.Add((int)table.Rows[i][0]);
+                    books.Add(new LibraryBook((int)table.Rows[i][0], (int)table.Rows[i][1], (int)table.Rows[i][2], (int)table.Rows[i][3]));
                 }
-                return true;
             }
-            return false;
+            return books;
         }
-        public bool GetBookByID(int book_id, string title, string author, string genre)
+        public bool GetBookByID(int book_id, out string title, out string author, out string genre)
         {
             string query = "usp_GetBookByID";
             SqlCommand cmd = new SqlCommand(query, connection);
@@ -291,6 +290,9 @@ namespace Library
                 genre = (string)table.Rows[0][2];
                 return true;
             }
+            title = "";
+            author = "";
+            genre = "";
             return false;
         }
         public bool GetBooksByAuthorFromLibrary (string author, int library_id, out List<int> ids)
@@ -335,9 +337,9 @@ namespace Library
             }
             return success;
         }
-        public bool GetCheckedOutBooksByLibrary(int library_id, out List<MemberLibraryBook> list) 
+        public List<MemberLibraryBook> GetCheckedOutBooksByLibrary(int library_id) 
         {
-            list = new List<MemberLibraryBook>();
+            List<MemberLibraryBook> list = new List<MemberLibraryBook>();
 
             string query = "usp_GetCheckedOutBooksByLibrary";
             SqlCommand cmd = new SqlCommand(query, connection);
@@ -347,15 +349,14 @@ namespace Library
             DataTable table;
             bool success = DataAdapter(cmd, out table);
 
-            if(success)
+            if (success)
             {
-                for(int i = 0; i < table.Rows.Count; i++)
+                for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    list.Add(new MemberLibraryBook((int)table.Rows[i][1], library_id, (int)table.Rows[i][0]));
+                    list.Add(new MemberLibraryBook((int)table.Rows[i][0], (int)table.Rows[i][1], (int)table.Rows[i][2], (int)table.Rows[i][3]));
                 }
             }
-            return success;
-
+            return list;
         }
         public bool GetCheckedOutBooksByMember(int member_id, out List<MemberLibraryBook> list)
         {
@@ -369,13 +370,13 @@ namespace Library
             DataTable table;
             bool success = DataAdapter(cmd, out table);
 
-            if(success)
-            {
-                for(int i = 0; i < table.Rows.Count;i++)
-                {
-                    list.Add(new MemberLibraryBook(member_id, (int)table.Rows[i][1], (int)table.Rows[i][0]));
-                }
-            }
+            //if(success)
+            //{
+            //    for(int i = 0; i < table.Rows.Count;i++)
+            //    {
+            //        list.Add(new MemberLibraryBook(member_id, (int)table.Rows[i][1], (int)table.Rows[i][0]));
+            //    }
+            //}
 
             return success;
         }
@@ -465,8 +466,8 @@ namespace Library
             {
                 GetLibraryBookInfo(library_id, book_id, out LibraryBook book);
 
-                id = book.Id;
-                quantity = book.Quantity;
+                id = book.id;
+                quantity = book.quantity;
                 return true;
             }
             return false;

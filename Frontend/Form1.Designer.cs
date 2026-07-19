@@ -61,9 +61,11 @@
             addBookToLibraryPanel = new Panel();
             booksToAddToLibraryFLP = new FlowLayoutPanel();
             checkoutBookPanel = new Panel();
-            bookCheckoutFLP = new FlowLayoutPanel();
-            memberCheckoutFLP = new FlowLayoutPanel();
             bt_confirmCheckout = new Button();
+            memberCheckoutFLP = new FlowLayoutPanel();
+            bookCheckoutFLP = new FlowLayoutPanel();
+            viewLibraryCheckedOutBooksPanel = new Panel();
+            l_checkedOutBooksTLP = new TableLayoutPanel();
             homePanel.SuspendLayout();
             registerBookPanel.SuspendLayout();
             registerMemberPanel.SuspendLayout();
@@ -75,6 +77,7 @@
             memberInfoPanel.SuspendLayout();
             addBookToLibraryPanel.SuspendLayout();
             checkoutBookPanel.SuspendLayout();
+            viewLibraryCheckedOutBooksPanel.SuspendLayout();
             SuspendLayout();
             // 
             // introLabel
@@ -368,6 +371,7 @@
             bt_viewCheckedOutBooks.TabIndex = 1;
             bt_viewCheckedOutBooks.Text = "View Checked Out Books";
             bt_viewCheckedOutBooks.UseVisualStyleBackColor = false;
+            bt_viewCheckedOutBooks.Click += bt_viewCheckedOutBooks_Click;
             // 
             // libraryTitleLabel
             // 
@@ -452,20 +456,6 @@
             checkoutBookPanel.Size = new Size(700, 338);
             checkoutBookPanel.TabIndex = 1;
             // 
-            // bookCheckoutFLP
-            // 
-            bookCheckoutFLP.Location = new Point(15, 15);
-            bookCheckoutFLP.Name = "bookCheckoutFLP";
-            bookCheckoutFLP.Size = new Size(277, 311);
-            bookCheckoutFLP.TabIndex = 0;
-            // 
-            // memberCheckoutFLP
-            // 
-            memberCheckoutFLP.Location = new Point(308, 19);
-            memberCheckoutFLP.Name = "memberCheckoutFLP";
-            memberCheckoutFLP.Size = new Size(277, 307);
-            memberCheckoutFLP.TabIndex = 1;
-            // 
             // bt_confirmCheckout
             // 
             bt_confirmCheckout.BackColor = SystemColors.Desktop;
@@ -476,12 +466,71 @@
             bt_confirmCheckout.TabIndex = 2;
             bt_confirmCheckout.Text = "Confirm";
             bt_confirmCheckout.UseVisualStyleBackColor = false;
+            bt_confirmCheckout.Click += bt_confirmCheckout_Click;
+            // 
+            // memberCheckoutFLP
+            // 
+            memberCheckoutFLP.Location = new Point(308, 19);
+            memberCheckoutFLP.Name = "memberCheckoutFLP";
+            memberCheckoutFLP.Size = new Size(277, 307);
+            memberCheckoutFLP.TabIndex = 1;
+            // 
+            // bookCheckoutFLP
+            // 
+            bookCheckoutFLP.Location = new Point(15, 15);
+            bookCheckoutFLP.Name = "bookCheckoutFLP";
+            bookCheckoutFLP.Size = new Size(277, 311);
+            bookCheckoutFLP.TabIndex = 0;
+            // 
+            // viewLibraryCheckedOutBooksPanel
+            // 
+            viewLibraryCheckedOutBooksPanel.BackColor = SystemColors.Desktop;
+            viewLibraryCheckedOutBooksPanel.Controls.Add(l_checkedOutBooksTLP);
+            viewLibraryCheckedOutBooksPanel.Dock = DockStyle.Fill;
+            viewLibraryCheckedOutBooksPanel.Location = new Point(0, 0);
+            viewLibraryCheckedOutBooksPanel.Name = "viewLibraryCheckedOutBooksPanel";
+            viewLibraryCheckedOutBooksPanel.Size = new Size(700, 338);
+            viewLibraryCheckedOutBooksPanel.TabIndex = 4;
+            // 
+            // l_checkedOutBooksTLP
+            // 
+            l_checkedOutBooksTLP.ColumnCount = 4;
+            l_checkedOutBooksTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            l_checkedOutBooksTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            l_checkedOutBooksTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            l_checkedOutBooksTLP.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            l_checkedOutBooksTLP.Location = new Point(32, 19);
+            l_checkedOutBooksTLP.Name = "l_checkedOutBooksTLP";
+            l_checkedOutBooksTLP.RowCount = 20;
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            l_checkedOutBooksTLP.Size = new Size(635, 300);
+            l_checkedOutBooksTLP.TabIndex = 0;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(viewLibraryCheckedOutBooksPanel);
             Controls.Add(libraryInfoPanel);
             Controls.Add(memberInfoPanel);
             Controls.Add(viewMembersPanel);
@@ -511,6 +560,7 @@
             memberInfoPanel.PerformLayout();
             addBookToLibraryPanel.ResumeLayout(false);
             checkoutBookPanel.ResumeLayout(false);
+            viewLibraryCheckedOutBooksPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -552,5 +602,7 @@
         private Button bt_confirmCheckout;
         private FlowLayoutPanel memberCheckoutFLP;
         private FlowLayoutPanel bookCheckoutFLP;
+        private Panel viewLibraryCheckedOutBooksPanel;
+        private TableLayoutPanel l_checkedOutBooksTLP;
     }
 }

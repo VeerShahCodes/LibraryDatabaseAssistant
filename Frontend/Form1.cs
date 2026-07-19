@@ -12,6 +12,9 @@ namespace Frontend
         SQL sql;
         int currentLibrary = -1;
         int currentBook = -1;
+
+        int checkOutBook = -1;
+        int checkOutUser = -1;
         public Form1()
         {
             InitializeComponent();
@@ -23,6 +26,7 @@ namespace Frontend
             viewMembersPanel.Visible = false;
             memberInfoPanel.Visible = false;
             addBookToLibraryPanel.Visible = false;
+            checkoutBookPanel.Visible = false;
             api = new API();
         }
 
@@ -85,9 +89,9 @@ namespace Frontend
                 bt_registerLibrarySubmit.Enabled = true;
 
                 registerLibraryPanel.Visible = false;
-                homePanel.Visible = true;                
+                homePanel.Visible = true;
             }
-            
+
         }
 
         private async void bt_viewLibraries_Click(object sender, EventArgs e)
@@ -124,17 +128,17 @@ namespace Frontend
 
         }
 
-        private void bt_viewMembers_Click(object sender, EventArgs e)
+        private async void bt_viewMembers_Click(object sender, EventArgs e)
         {
             homePanel.Visible = false;
             viewMembersPanel.Visible = true;
-            var members = api.GetMembers();
-            if (members == null || members.Result.Count == 0)
+            var members = await api.GetMembers();
+            if (members == null || members.Count == 0)
                 return;
 
             memberViewerFLP.Controls.Clear();
 
-            var sorted = members.Result.OrderBy(m => m.name, StringComparer.OrdinalIgnoreCase).ToList();
+            var sorted = members.OrderBy(m => m.name, StringComparer.OrdinalIgnoreCase).ToList();
 
             for (int i = 0; i < sorted.Count; i++)
             {
@@ -159,15 +163,15 @@ namespace Frontend
             memberNameLabel.Text = name;
         }
 
-        private void bt_addLibraryBook_Click(object sender, EventArgs e)
+        private async void bt_addLibraryBook_Click(object sender, EventArgs e)
         {
             addBookToLibraryPanel.Visible = true;
             libraryInfoPanel.Visible = false;
             booksToAddToLibraryFLP.Controls.Clear();
-            var books = api.GetBooks();
-            if (books == null || books.Result.Count == 0)
+            var books = await api.GetBooks();
+            if (books == null || books.Count == 0)
                 return;
-            var sorted = books.Result.OrderBy(m => m.title, StringComparer.OrdinalIgnoreCase).ToList();
+            var sorted = books.OrderBy(m => m.title, StringComparer.OrdinalIgnoreCase).ToList();
 
             for (int i = 0; i < sorted.Count; i++)
             {
@@ -184,7 +188,7 @@ namespace Frontend
 
         }
 
-        private async Task Book_Click(object sender, EventArgs e)
+        private async void Book_Click(object sender, EventArgs e)
         {
             Button ClickedButton = sender as Button;
             addBookToLibraryPanel.Visible = false;
@@ -194,9 +198,73 @@ namespace Frontend
             await api.AddBookToLibrary(currentBook, currentLibrary);
         }
 
-        private void bt_checkoutBook_Click(object sender, EventArgs e)
+        private async void bt_checkoutBook_Click(object sender, EventArgs e)
         {
+            checkoutBookPanel.Visible = true;
+            libraryInfoPanel.Visible = false;
 
+            List<Member> members = await api.GetMembers();
+            List<LibraryBook> libraryBooks = await api.GetAvailableBooksByLibrary(currentLibrary);
+
+            for (int i = 0; i < members.Count; i++)
+            {
+                Button button = new Button();
+                button.BackColor = SystemColors.Desktop;
+                button.ForeColor = SystemColors.ButtonFace;
+                button.Text = members[i].name;
+                button.Font = new Font(FontFamily.GenericSerif, 7);
+                button.AutoSize = true;
+                button.Tag = members[i].id;
+                button.Click += MemCheckout_Click;
+                memberCheckoutFLP.Controls.Add(button);
+            }
+
+            for (int i = 0; i < libraryBooks.Count; i++)
+            {
+                Book book = await api.GetBookById(libraryBooks[i].bookId);
+
+                Button button = new Button();
+                button.BackColor = SystemColors.Desktop;
+                button.ForeColor = SystemColors.ButtonFace;
+                button.Text = book.title;
+                button.Font = new Font(FontFamily.GenericSerif, 7);
+                button.AutoSize = true;
+                button.Tag = book.id;
+                button.Click += BookCheckout_Click;
+                bookCheckoutFLP.Controls.Add(button);
+            }
+        }
+
+        private void BookCheckout_Click(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            checkOutBook = (int)button.Tag;
+        }
+
+        private void MemCheckout_Click(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            checkOutUser = (int)button.Tag;
+        }
+
+        private async void bt_confirmCheckout_Click(object sender, EventArgs e)
+        {
+            await api.CheckoutBook(checkOutUser, checkOutBook, currentLibrary);
+            checkOutBook = -1;
+            checkOutUser = -1;
+            checkoutBookPanel.Visible = false;
+            bookCheckoutFLP.Controls.Clear();
+            memberCheckoutFLP.Controls.Clear();
+            libraryInfoPanel.Visible = true;
+        }
+
+        private void bt_viewCheckedOutBooks_Click(object sender, EventArgs e)
+        {
+            libraryInfoPanel.Visible = false;
+            viewLibraryCheckedOutBooksPanel.Visible = true;
+
+            l_checkedOutBooksTLP.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
+            
         }
     }
 }
