@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
 using Library.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Frontend
 {
     public class API
@@ -152,7 +153,7 @@ namespace Frontend
                 }
                 catch
                 {
-
+                    Console.WriteLine("Error: Unable to get available books from library.");
                 }
                 return books;
             }
@@ -172,7 +173,7 @@ namespace Frontend
                 }
                 catch
                 {
-
+                    Console.WriteLine("Error: Unable to retrieve book by ID.");
                 }
    
             }
@@ -194,6 +195,68 @@ namespace Frontend
                     Console.WriteLine($"Error: {exception.Message}");
                 }
             }
+        }
+
+        public async Task<List<MemberLibraryBook>> GetCheckedOutBooksByLibrary(int library_id)
+        {
+            List<MemberLibraryBook> checkedOutBooks = new List<MemberLibraryBook>();
+
+            using (WebClient client = new WebClient())
+            {
+                List<LibraryBook> books = new List<LibraryBook>();
+                try
+                {
+                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetCheckedOutBooksByLibrary?library_id={library_id}");
+                    checkedOutBooks = JsonSerializer.Deserialize<List<MemberLibraryBook>>(result);
+                    Console.WriteLine($"reponse from api: {result}");
+                    return checkedOutBooks;
+                }
+                catch
+                {
+                    Console.WriteLine("Error: Unable to retrieve checked out books.");
+                }
+            }
+
+            return checkedOutBooks;
+        }
+
+        public async Task<Member> GetMemberById(int member_id)
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetMemberById?member_id={member_id}");
+                    Member member = JsonSerializer.Deserialize<Member>(result);
+                    Console.WriteLine($"reponse from api: {result}");
+                    return member;
+                }
+                catch
+                {
+                    Console.WriteLine("Error: Unable to retrieve member by ID.");
+                }
+
+            }
+            return null;
+        }
+
+        public async Task<Library.Models.Library> GetLibraryById(int library_id)
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetLibraryById?library_id={library_id}");
+                    Library.Models.Library library = JsonSerializer.Deserialize<Library.Models.Library>(result);
+                    Console.WriteLine($"reponse from api: {result}");
+                    return library;
+                }
+                catch
+                {
+                    Console.WriteLine("Error: Unable to retrieve library by ID.");
+                }
+            }
+            return null;
         }
     }
 }

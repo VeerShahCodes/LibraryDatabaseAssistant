@@ -189,6 +189,7 @@ namespace Library
         }
         
 
+
         public bool GetMemberLibraryBookID(int library_id, int book_id, int member_id, DateTime toc, out object id)
         {
             string query = "usp_GetMemberLibraryBookID";
@@ -353,7 +354,7 @@ namespace Library
             {
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    list.Add(new MemberLibraryBook((int)table.Rows[i][0], (int)table.Rows[i][1], (int)table.Rows[i][2], (int)table.Rows[i][3]));
+                    list.Add(new MemberLibraryBook((int)table.Rows[i][0], (int)table.Rows[i][1], (int)table.Rows[i][2], (int)table.Rows[i][3], (DateTime)table.Rows[i][4]));
                 }
             }
             return list;

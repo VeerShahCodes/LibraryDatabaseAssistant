@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Library.Models;
 using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Generic;
+using System;
 namespace Library.Controllers
 {
 
@@ -10,7 +13,7 @@ namespace Library.Controllers
     [Route("[controller]")]
     public class LibraryController : ControllerBase
     {
-        SQL sql = new SQL("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"\\\\GMRDC1\\Folder Redirection\\Veer.Shah\\Documents\\Visual Studio 2022\\Projects\\SQLAPIs\\Library\\DB\\Database1.mdf\";Integrated Security=True");
+        SQL sql = new SQL("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\shahv\\source\\repos\\LibraryDatabaseAssistant\\DB\\Database1.mdf;Integrated Security=True");
 
         [HttpPost("AddBookToSystem")]
         public ActionResult AddBookToSystem(string title, string author, string genre)
@@ -118,7 +121,39 @@ namespace Library.Controllers
         {
             if(sql.CheckoutBook(book_id, library_id, member_id, out object id))
             {
-                return Ok(new MemberLibraryBook((int)id, member_id, library_id, book_id));
+                return Ok(new MemberLibraryBook((int)id, member_id, book_id, library_id, DateTime.Now));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("GetCheckedOutBooksByLibrary")]
+        public ActionResult GetCheckedOutBooksByLibrary(int library_id)
+        {
+            return Ok(sql.GetCheckedOutBooksByLibrary(library_id));
+        }
+
+        [HttpGet("GetMemberById")]
+        public ActionResult GetMemberById(int member_id)
+        {
+            if (sql.GetMemberInfoByID(member_id, out string name))
+            {
+                return Ok(new Member(member_id, name));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("GetLibraryById")]
+        public ActionResult GetLibraryById(int library_id)
+        {
+            if (sql.GetLibraryByID(library_id, out string location))
+            {
+                return Ok(new Models.Library(library_id, location));
             }
             else
             {

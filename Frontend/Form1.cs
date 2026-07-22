@@ -27,6 +27,7 @@ namespace Frontend
             memberInfoPanel.Visible = false;
             addBookToLibraryPanel.Visible = false;
             checkoutBookPanel.Visible = false;
+            viewLibraryCheckedOutBooksPanel.Visible = false;
             api = new API();
         }
 
@@ -182,7 +183,7 @@ namespace Frontend
                 button.Font = new Font(FontFamily.GenericSerif, 9);
                 button.AutoSize = true;
                 button.Tag = sorted[i].id;
-                button.Click += Button_Click;
+                button.Click += Book_Click;
                 booksToAddToLibraryFLP.Controls.Add(button);
             }
 
@@ -221,17 +222,21 @@ namespace Frontend
 
             for (int i = 0; i < libraryBooks.Count; i++)
             {
-                Book book = await api.GetBookById(libraryBooks[i].bookId);
+                if (libraryBooks[i].quantity > 0)
+                {
+                    Book book = await api.GetBookById(libraryBooks[i].bookId);
 
-                Button button = new Button();
-                button.BackColor = SystemColors.Desktop;
-                button.ForeColor = SystemColors.ButtonFace;
-                button.Text = book.title;
-                button.Font = new Font(FontFamily.GenericSerif, 7);
-                button.AutoSize = true;
-                button.Tag = book.id;
-                button.Click += BookCheckout_Click;
-                bookCheckoutFLP.Controls.Add(button);
+                    Button button = new Button();
+                    button.BackColor = SystemColors.Desktop;
+                    button.ForeColor = SystemColors.ButtonFace;
+                    button.Text = book.title;
+                    button.Font = new Font(FontFamily.GenericSerif, 7);
+                    button.AutoSize = true;
+                    button.Tag = book.id;
+                    button.Click += BookCheckout_Click;
+                    bookCheckoutFLP.Controls.Add(button);
+                }
+
             }
         }
 
@@ -258,13 +263,52 @@ namespace Frontend
             libraryInfoPanel.Visible = true;
         }
 
-        private void bt_viewCheckedOutBooks_Click(object sender, EventArgs e)
+        private async void bt_viewCheckedOutBooks_Click(object sender, EventArgs e)
         {
             libraryInfoPanel.Visible = false;
             viewLibraryCheckedOutBooksPanel.Visible = true;
 
-            l_checkedOutBooksTLP.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
-            
+            List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByLibrary(currentLibrary);
+
+            for(int i = 0; i < checkedOutBooks.Count; i++) 
+            {
+                MemberLibraryBook checkedOutBook = checkedOutBooks[i];
+
+                Member member = await api.GetMemberById(checkedOutBook.member_id);
+                string name = member.name;
+                Label Name = new Label();
+                Name.Text = name;
+                Name.Location = new Point(memberLabel.Location.X, memberLabel.Location.Y + ((i+1) * 50));
+                Name.ForeColor = Color.White;
+
+                Book book = await api.GetBookById(checkedOutBook.book_id);
+                string title = book.title;
+                Label Title = new Label();
+                Title.Text = title;
+                Title.Location = new Point(titleLabel.Location.X, titleLabel.Location.Y + ((i+1) * 50));
+                Title.ForeColor = Color.White;
+
+                Library.Models.Library library = await api.GetLibraryById(checkedOutBook.library_id);
+                string location = library.location;
+                Label Location = new Label();
+                Location.Text = location;
+                Location.Location = new Point(libraryLabel.Location.X, libraryLabel.Location.Y + ((i+1) * 50));
+                Location.ForeColor = Color.White;
+
+                DateTime toc = checkedOutBook.timeOfCheckout;
+                Label Toc = new Label();
+                Toc.Text = toc.Date.ToString();
+                Toc.Location = new Point(timeLabel.Location.X, timeLabel.Location.Y + ((i+1) * 50));
+                Toc.ForeColor = Color.White;
+
+                checkedOutBookDisplay.Controls.Add(Name);
+                checkedOutBookDisplay.Controls.Add(Title);
+                checkedOutBookDisplay.Controls.Add(Location);
+                checkedOutBookDisplay.Controls.Add(Toc);
+
+
+
+            }
         }
     }
 }
