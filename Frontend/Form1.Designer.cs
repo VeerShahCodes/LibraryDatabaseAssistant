@@ -67,8 +67,8 @@
             viewLibraryCheckedOutBooksPanel = new Panel();
             checkedOutBookDisplay = new Panel();
             memberLabel = new Label();
-            libraryLabel = new Label();
             titleLabel = new Label();
+            libraryLabel = new Label();
             timeLabel = new Label();
             homePanel.SuspendLayout();
             registerBookPanel.SuspendLayout();
@@ -516,49 +516,49 @@
             // checkedOutBookDisplay
             // 
             checkedOutBookDisplay.Controls.Add(timeLabel);
-            checkedOutBookDisplay.Controls.Add(titleLabel);
             checkedOutBookDisplay.Controls.Add(libraryLabel);
+            checkedOutBookDisplay.Controls.Add(titleLabel);
             checkedOutBookDisplay.Controls.Add(memberLabel);
-            checkedOutBookDisplay.Location = new Point(33, 24);
+            checkedOutBookDisplay.Location = new Point(46, 26);
             checkedOutBookDisplay.Name = "checkedOutBookDisplay";
-            checkedOutBookDisplay.Size = new Size(735, 410);
+            checkedOutBookDisplay.Size = new Size(722, 409);
             checkedOutBookDisplay.TabIndex = 0;
             // 
             // memberLabel
             // 
             memberLabel.AutoSize = true;
             memberLabel.ForeColor = SystemColors.ButtonFace;
-            memberLabel.Location = new Point(27, 21);
+            memberLabel.Location = new Point(45, 16);
             memberLabel.Name = "memberLabel";
             memberLabel.Size = new Size(65, 20);
             memberLabel.TabIndex = 0;
             memberLabel.Text = "Member";
             // 
-            // libraryLabel
-            // 
-            libraryLabel.AutoSize = true;
-            libraryLabel.ForeColor = SystemColors.ButtonFace;
-            libraryLabel.Location = new Point(189, 21);
-            libraryLabel.Name = "libraryLabel";
-            libraryLabel.Size = new Size(54, 20);
-            libraryLabel.TabIndex = 1;
-            libraryLabel.Text = "Library";
-            // 
             // titleLabel
             // 
             titleLabel.AutoSize = true;
             titleLabel.ForeColor = SystemColors.ButtonFace;
-            titleLabel.Location = new Point(319, 21);
+            titleLabel.Location = new Point(196, 16);
             titleLabel.Name = "titleLabel";
             titleLabel.Size = new Size(38, 20);
-            titleLabel.TabIndex = 2;
+            titleLabel.TabIndex = 1;
             titleLabel.Text = "Title";
+            // 
+            // libraryLabel
+            // 
+            libraryLabel.AutoSize = true;
+            libraryLabel.ForeColor = SystemColors.ButtonFace;
+            libraryLabel.Location = new Point(347, 16);
+            libraryLabel.Name = "libraryLabel";
+            libraryLabel.Size = new Size(54, 20);
+            libraryLabel.TabIndex = 2;
+            libraryLabel.Text = "Library";
             // 
             // timeLabel
             // 
             timeLabel.AutoSize = true;
             timeLabel.ForeColor = SystemColors.ButtonFace;
-            timeLabel.Location = new Point(436, 18);
+            timeLabel.Location = new Point(525, 16);
             timeLabel.Name = "timeLabel";
             timeLabel.Size = new Size(125, 20);
             timeLabel.TabIndex = 3;
@@ -644,9 +644,9 @@
         private FlowLayoutPanel bookCheckoutFLP;
         private Panel viewLibraryCheckedOutBooksPanel;
         private Panel checkedOutBookDisplay;
+        private Label memberLabel;
         private Label titleLabel;
         private Label libraryLabel;
-        private Label memberLabel;
         private Label timeLabel;
     }
 }

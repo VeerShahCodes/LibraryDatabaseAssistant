@@ -269,7 +269,7 @@ namespace Frontend
             viewLibraryCheckedOutBooksPanel.Visible = true;
 
             List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByLibrary(currentLibrary);
-
+            
             for(int i = 0; i < checkedOutBooks.Count; i++) 
             {
                 MemberLibraryBook checkedOutBook = checkedOutBooks[i];
