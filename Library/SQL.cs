@@ -359,28 +359,6 @@ namespace Library
             }
             return list;
         }
-        public bool GetCheckedOutBooksByMember(int member_id, out List<MemberLibraryBook> list)
-        {
-            list = new List<MemberLibraryBook>();
-
-            string query = "usp_GetCheckedOutBooksByMember";
-            SqlCommand cmd = new SqlCommand(query, connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@member_id", member_id);
-
-            DataTable table;
-            bool success = DataAdapter(cmd, out table);
-
-            //if(success)
-            //{
-            //    for(int i = 0; i < table.Rows.Count;i++)
-            //    {
-            //        list.Add(new MemberLibraryBook(member_id, (int)table.Rows[i][1], (int)table.Rows[i][0]));
-            //    }
-            //}
-
-            return success;
-        }
         public bool GetLibrariesWithBook (int book_id, out List<int> ids) 
         {
             ids = new List<int>();
@@ -449,7 +427,7 @@ namespace Library
             return list;
         }
         
-        public bool ReturnBook (int member_id, int book_id, int library_id, out int id, out int quantity) 
+        public bool ReturnBook (int member_id, int book_id, int library_id, int mlbId, out int id, out int quantity) 
         {
             id = -1;
             quantity = -1;
@@ -460,7 +438,7 @@ namespace Library
             cmd.Parameters.AddWithValue("@member_id", member_id);
             cmd.Parameters.AddWithValue("@book_id", book_id);
             cmd.Parameters.AddWithValue("@library_id", library_id);
-
+            cmd.Parameters.AddWithValue("@checkedOutBook_id", mlbId);
             bool success = ExecuteNonQuery(cmd);
 
             if(success)
@@ -487,6 +465,24 @@ namespace Library
             for(int i = 0; i < table.Rows.Count; i++)
             {
                 books.Add(new Book((int)table.Rows[i][0], (string)table.Rows[i][1], (string)table.Rows[i][2], (string)table.Rows[i][3]));
+            }
+
+            return books;
+        }
+
+        public List<MemberLibraryBook> GetCheckedOutBooksByMember(int member_id)
+        {
+            List<MemberLibraryBook> books = new List<MemberLibraryBook>();
+            string query = "usp_GetCheckedOutBooksByMember";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@member_id", member_id);
+            DataTable table;
+            DataAdapter(cmd, out table);
+            for(int i = 0; i < table.Rows.Count; i++)
+            {
+                MemberLibraryBook book = new MemberLibraryBook((int)table.Rows[i][0], (int)table.Rows[i][1], (int)table.Rows[i][2], (int)table.Rows[i][3], (DateTime)table.Rows[i][4]);
+                books.Add(book);
             }
 
             return books;

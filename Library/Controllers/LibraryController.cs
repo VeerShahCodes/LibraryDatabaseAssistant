@@ -13,7 +13,7 @@ namespace Library.Controllers
     [Route("[controller]")]
     public class LibraryController : ControllerBase
     {
-        SQL sql = new SQL("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\shahv\\source\\repos\\LibraryDatabaseAssistant\\DB\\Database1.mdf;Integrated Security=True");
+        SQL sql = new SQL("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"\\\\GMRDC1\\Folder Redirection\\Veer.Shah\\Documents\\Visual Studio 2022\\Projects\\SQLAPIs\\Library\\DB\\Database1.mdf\";Integrated Security=True");
 
         [HttpPost("AddBookToSystem")]
         public ActionResult AddBookToSystem(string title, string author, string genre)
@@ -135,6 +135,12 @@ namespace Library.Controllers
             return Ok(sql.GetCheckedOutBooksByLibrary(library_id));
         }
 
+        [HttpGet("GetCheckedOutBooksByMember")]
+        public ActionResult GetCheckedOutBooksByMember(int member_id)
+        {
+            return Ok(sql.GetCheckedOutBooksByMember(member_id));
+        }
+
         [HttpGet("GetMemberById")]
         public ActionResult GetMemberById(int member_id)
         {
@@ -154,6 +160,19 @@ namespace Library.Controllers
             if (sql.GetLibraryByID(library_id, out string location))
             {
                 return Ok(new Models.Library(library_id, location));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("ReturnBook")]
+        public ActionResult ReturnBook(int member_id, int book_id, int library_id, int mlbId)
+        {
+            if (sql.ReturnBook(member_id, book_id, library_id, mlbId, out int id, out int quantity))
+            {
+                return Ok(new LibraryBook(id, book_id, library_id, quantity));
             }
             else
             {

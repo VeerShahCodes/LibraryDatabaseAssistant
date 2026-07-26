@@ -12,29 +12,24 @@ namespace Frontend
         SQL sql;
         int currentLibrary = -1;
         int currentBook = -1;
+        int currentMember = -1;
 
         int checkOutBook = -1;
         int checkOutUser = -1;
+
+        int currentReturnBookId = -1;
+        int currentReturnMLBId = -1;
+        int currentReturnLibraryId = -1;
         public Form1()
         {
             InitializeComponent();
-            registerBookPanel.Visible = false;
-            registerMemberPanel.Visible = false;
-            registerLibraryPanel.Visible = false;
-            viewLibrariesPanel.Visible = false;
-            libraryInfoPanel.Visible = false;
-            viewMembersPanel.Visible = false;
-            memberInfoPanel.Visible = false;
-            addBookToLibraryPanel.Visible = false;
-            checkoutBookPanel.Visible = false;
-            viewLibraryCheckedOutBooksPanel.Visible = false;
+            homePanel.BringToFront();
             api = new API();
         }
 
         private void bt_addBook_Click(object sender, EventArgs e)
         {
-            homePanel.Visible = false;
-            registerBookPanel.Visible = true;
+            registerBookPanel.BringToFront();
 
         }
 
@@ -45,15 +40,12 @@ namespace Frontend
             string genre = tb_genre.Text;
 
             await api.AddBookToSystem(title, author, genre);
-
-            registerBookPanel.Visible = false;
-            homePanel.Visible = true;
+            homePanel.BringToFront();
         }
 
         private void bt_addMember_Click(object sender, EventArgs e)
         {
-            homePanel.Visible = false;
-            registerMemberPanel.Visible = true;
+            registerMemberPanel.BringToFront();
         }
 
         private async void bt_registerMemberSubmit_Click(object sender, EventArgs e)
@@ -62,14 +54,12 @@ namespace Frontend
 
             await api.RegisterMember(name);
 
-            registerMemberPanel.Visible = false;
-            homePanel.Visible = true;
+            homePanel.BringToFront();
         }
 
         private void bt_addLibrary_Click(object sender, EventArgs e)
         {
-            homePanel.Visible = false;
-            registerLibraryPanel.Visible = true;
+            registerLibraryPanel.BringToFront();
         }
 
         private async void bt_registerLibrarySubmit_Click(object sender, EventArgs e)
@@ -89,16 +79,14 @@ namespace Frontend
             {
                 bt_registerLibrarySubmit.Enabled = true;
 
-                registerLibraryPanel.Visible = false;
-                homePanel.Visible = true;
+                homePanel.BringToFront();
             }
 
         }
 
         private async void bt_viewLibraries_Click(object sender, EventArgs e)
         {
-            homePanel.Visible = false;
-            viewLibrariesPanel.Visible = true;
+            viewLibrariesPanel.BringToFront();
             List<Library.Models.Library> libraries = await api.GetLibraries();
             for (int i = 0; i < libraries.Count; i++)
             {
@@ -122,24 +110,24 @@ namespace Frontend
             currentLibrary = (int)clickedButton.Tag;
 
             // sql.GetLibraryID(location, out object id);
-            viewLibrariesPanel.Visible = false;
-            libraryInfoPanel.Visible = true;
+            libraryInfoPanel.BringToFront();
             libraryTitleLabel.Visible = true;
+
             libraryTitleLabel.Text = $"{location} Library";
 
         }
 
         private async void bt_viewMembers_Click(object sender, EventArgs e)
         {
-            homePanel.Visible = false;
-            viewMembersPanel.Visible = true;
-            var members = await api.GetMembers();
+
+            viewMembersPanel.BringToFront();
+            List<Member> members = await api.GetMembers();
             if (members == null || members.Count == 0)
                 return;
 
             memberViewerFLP.Controls.Clear();
 
-            var sorted = members.OrderBy(m => m.name, StringComparer.OrdinalIgnoreCase).ToList();
+            List<Member> sorted = members.OrderBy(m => m.name, StringComparer.OrdinalIgnoreCase).ToList();
 
             for (int i = 0; i < sorted.Count; i++)
             {
@@ -149,6 +137,7 @@ namespace Frontend
                 button.Text = sorted[i].name;
                 button.Font = new Font(FontFamily.GenericSerif, 9);
                 button.AutoSize = true;
+                button.Tag = sorted[i].id;
                 button.Click += MemberButton_Click;
                 memberViewerFLP.Controls.Add(button);
             }
@@ -159,20 +148,19 @@ namespace Frontend
             Button clickedButton = sender as Button;
 
             string name = clickedButton.Text;
-            memberInfoPanel.Visible = true;
-            viewMembersPanel.Visible = false;
+            memberInfoPanel.BringToFront();
             memberNameLabel.Text = name;
+            currentMember = (int)clickedButton.Tag;
         }
 
         private async void bt_addLibraryBook_Click(object sender, EventArgs e)
         {
-            addBookToLibraryPanel.Visible = true;
-            libraryInfoPanel.Visible = false;
+            addBookToLibraryPanel.BringToFront();
             booksToAddToLibraryFLP.Controls.Clear();
-            var books = await api.GetBooks();
+            List<Book> books = await api.GetBooks();
             if (books == null || books.Count == 0)
                 return;
-            var sorted = books.OrderBy(m => m.title, StringComparer.OrdinalIgnoreCase).ToList();
+            List<Book> sorted = books.OrderBy(m => m.title, StringComparer.OrdinalIgnoreCase).ToList();
 
             for (int i = 0; i < sorted.Count; i++)
             {
@@ -192,8 +180,7 @@ namespace Frontend
         private async void Book_Click(object sender, EventArgs e)
         {
             Button ClickedButton = sender as Button;
-            addBookToLibraryPanel.Visible = false;
-            libraryInfoPanel.Visible = true;
+            libraryInfoPanel.BringToFront();
             currentBook = (int)ClickedButton.Tag;
 
             await api.AddBookToLibrary(currentBook, currentLibrary);
@@ -201,8 +188,7 @@ namespace Frontend
 
         private async void bt_checkoutBook_Click(object sender, EventArgs e)
         {
-            checkoutBookPanel.Visible = true;
-            libraryInfoPanel.Visible = false;
+            checkoutBookPanel.BringToFront();
 
             List<Member> members = await api.GetMembers();
             List<LibraryBook> libraryBooks = await api.GetAvailableBooksByLibrary(currentLibrary);
@@ -257,20 +243,19 @@ namespace Frontend
             await api.CheckoutBook(checkOutUser, checkOutBook, currentLibrary);
             checkOutBook = -1;
             checkOutUser = -1;
-            checkoutBookPanel.Visible = false;
             bookCheckoutFLP.Controls.Clear();
             memberCheckoutFLP.Controls.Clear();
-            libraryInfoPanel.Visible = true;
+
+            libraryInfoPanel.BringToFront();
         }
 
         private async void bt_viewCheckedOutBooks_Click(object sender, EventArgs e)
         {
-            libraryInfoPanel.Visible = false;
-            viewLibraryCheckedOutBooksPanel.Visible = true;
+            viewLibraryCheckedOutBooksPanel.BringToFront();
 
             List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByLibrary(currentLibrary);
-            
-            for(int i = 0; i < checkedOutBooks.Count; i++) 
+
+            for (int i = 0; i < checkedOutBooks.Count; i++)
             {
                 MemberLibraryBook checkedOutBook = checkedOutBooks[i];
 
@@ -278,27 +263,27 @@ namespace Frontend
                 string name = member.name;
                 Label Name = new Label();
                 Name.Text = name;
-                Name.Location = new Point(memberLabel.Location.X, memberLabel.Location.Y + ((i+1) * 50));
+                Name.Location = new Point(memberLabel.Location.X, memberLabel.Location.Y + ((i + 1) * 50));
                 Name.ForeColor = Color.White;
 
                 Book book = await api.GetBookById(checkedOutBook.book_id);
                 string title = book.title;
                 Label Title = new Label();
                 Title.Text = title;
-                Title.Location = new Point(titleLabel.Location.X, titleLabel.Location.Y + ((i+1) * 50));
+                Title.Location = new Point(titleLabel.Location.X, titleLabel.Location.Y + ((i + 1) * 50));
                 Title.ForeColor = Color.White;
 
                 Library.Models.Library library = await api.GetLibraryById(checkedOutBook.library_id);
                 string location = library.location;
                 Label Location = new Label();
                 Location.Text = location;
-                Location.Location = new Point(libraryLabel.Location.X, libraryLabel.Location.Y + ((i+1) * 50));
+                Location.Location = new Point(libraryLabel.Location.X, libraryLabel.Location.Y + ((i + 1) * 50));
                 Location.ForeColor = Color.White;
 
                 DateTime toc = checkedOutBook.timeOfCheckout;
                 Label Toc = new Label();
                 Toc.Text = toc.Date.ToString();
-                Toc.Location = new Point(timeLabel.Location.X, timeLabel.Location.Y + ((i+1) * 50));
+                Toc.Location = new Point(timeLabel.Location.X, timeLabel.Location.Y + ((i + 1) * 50));
                 Toc.ForeColor = Color.White;
 
                 checkedOutBookDisplay.Controls.Add(Name);
@@ -309,6 +294,113 @@ namespace Frontend
 
 
             }
+        }
+
+        private async void bt_viewMemberBooks_Click(object sender, EventArgs e)
+        {
+            viewMemberCheckedOutBooksPanel.BringToFront();
+
+            List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByMember(currentMember);
+
+            for (int i = 0; i < checkedOutBooks.Count; i++)
+            {
+                MemberLibraryBook checkedOutBook = checkedOutBooks[i];
+
+                Member member = await api.GetMemberById(checkedOutBook.member_id);
+                string name = member.name;
+                Label Name = new Label();
+                Name.Text = name;
+                Name.Location = new Point(memberLabel2.Location.X, memberLabel2.Location.Y + ((i + 1) * 50));
+                Name.ForeColor = Color.White;
+
+                Book book = await api.GetBookById(checkedOutBook.book_id);
+                string title = book.title;
+                Label Title = new Label();
+                Title.Text = title;
+                Title.Location = new Point(bookLabelTwo.Location.X, bookLabelTwo.Location.Y + ((i + 1) * 50));
+                Title.ForeColor = Color.White;
+
+                Library.Models.Library library = await api.GetLibraryById(checkedOutBook.library_id);
+                string location = library.location;
+                Label Location = new Label();
+                Location.Text = location;
+                Location.Location = new Point(libraryLabelTwo.Location.X, libraryLabelTwo.Location.Y + ((i + 1) * 50));
+                Location.ForeColor = Color.White;
+
+                DateTime toc = checkedOutBook.timeOfCheckout;
+                Label Toc = new Label();
+                Toc.Text = toc.Date.ToString();
+                Toc.Location = new Point(timeLabelTwo.Location.X, timeLabelTwo.Location.Y + ((i + 1) * 50));
+                Toc.ForeColor = Color.White;
+
+                memberCheckedOutBooksDisplay.Controls.Add(Name);
+                memberCheckedOutBooksDisplay.Controls.Add(Title);
+                memberCheckedOutBooksDisplay.Controls.Add(Location);
+                memberCheckedOutBooksDisplay.Controls.Add(Toc);
+
+
+
+            }
+        }
+
+        private async void bt_returnBook_Click(object sender, EventArgs e)
+        {
+            memberReturnBookPanel.BringToFront();
+            List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByMember(currentMember);
+
+            for (int i = 0; i < checkedOutBooks.Count; i++)
+            {
+                Button button = new Button();
+                Book book = await api.GetBookById(checkedOutBooks[i].book_id);
+                button.Text = book.title;
+                button.BackColor = SystemColors.Desktop;
+                button.ForeColor = SystemColors.ButtonFace;
+                button.Font = new Font(FontFamily.GenericSerif, 13);
+                button.Click += BookReturnChoice_Click;
+                button.Tag = checkedOutBooks[i];
+                button.AutoSize = true;
+                returnBookMemberChoiceFLP.Controls.Add(button);
+
+            }
+
+            List<Library.Models.Library> libraries = await api.GetLibraries();
+            for (int i = 0; i < libraries.Count; i++)
+            {
+                Button button = new Button();
+                button.Text = libraries[i].location;
+                button.BackColor = SystemColors.Desktop;
+                button.ForeColor = SystemColors.ButtonFace;
+                button.Font = new Font(FontFamily.GenericSerif, 13);
+                button.Click += LibraryReturnChoice_Click;
+                button.Tag = libraries[i].id;
+                button.AutoSize = true;
+                returnLibraryMemberChoiceFLP.Controls.Add(button);
+            }
+        }
+
+        private void LibraryReturnChoice_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = sender as Button;
+            currentReturnLibraryId = (int)clickedButton.Tag;
+        }
+
+        private void BookReturnChoice_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = sender as Button;
+            MemberLibraryBook book = (MemberLibraryBook)clickedButton.Tag;
+            currentReturnBookId = book.book_id;
+            currentReturnMLBId = book.id;
+        }
+
+        private void bt_memberCheckoutBook_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void bt_returnBookMemberSubmit_Click(object sender, EventArgs e)
+        {
+            await api.ReturnBook(currentMember, currentReturnBookId, currentReturnLibraryId, currentReturnMLBId);
+            memberInfoPanel.BringToFront();
         }
     }
 }

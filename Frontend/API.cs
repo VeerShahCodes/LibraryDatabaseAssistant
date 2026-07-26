@@ -203,7 +203,6 @@ namespace Frontend
 
             using (WebClient client = new WebClient())
             {
-                List<LibraryBook> books = new List<LibraryBook>();
                 try
                 {
                     string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetCheckedOutBooksByLibrary?library_id={library_id}");
@@ -257,6 +256,45 @@ namespace Frontend
                 }
             }
             return null;
+        }
+
+        public async Task<List<MemberLibraryBook>> GetCheckedOutBooksByMember(int member_id)
+        {
+            List<MemberLibraryBook> checkedOutBooks = new List<MemberLibraryBook>();
+
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetCheckedOutBooksByMember?member_id={member_id}");
+                    checkedOutBooks = JsonSerializer.Deserialize<List<MemberLibraryBook>>(result);
+                    Console.WriteLine($"reponse from api: {result}");
+                    return checkedOutBooks;
+                }
+                catch
+                {
+                    Console.WriteLine("Error: Unable to retrieve checked out books.");
+                }
+            }
+
+            return checkedOutBooks;
+        }
+
+        public async Task ReturnBook(int member_id, int book_id, int library_id, int mlbId)
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/ReturnBook?member_id={member_id}&book_id={book_id}&library_id={library_id}&mlbId={mlbId}", "a");
+                    Console.WriteLine($"Response from API: {result}");
+                }
+                catch (WebException exception)
+                {
+                    Console.WriteLine($"Error: {exception.Message}");
+                }
+            }
         }
     }
 }
