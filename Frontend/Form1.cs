@@ -20,16 +20,43 @@ namespace Frontend
         int currentReturnBookId = -1;
         int currentReturnMLBId = -1;
         int currentReturnLibraryId = -1;
+
+        Panel currentPanel;
         public Form1()
         {
             InitializeComponent();
             homePanel.BringToFront();
+            currentPanel = homePanel;
+            bt_goBack.BringToFront();
             api = new API();
+
+
+            homePanel.Tag = homePanel;
+
+            registerBookPanel.Tag = homePanel;
+            registerLibraryPanel.Tag = homePanel;
+            registerMemberPanel.Tag = homePanel;
+            viewLibrariesPanel.Tag = homePanel;
+            viewMembersPanel.Tag = homePanel;
+
+            libraryInfoPanel.Tag = viewLibrariesPanel;
+
+            viewLibraryCheckedOutBooksPanel.Tag = libraryInfoPanel;
+            addBookToLibraryPanel.Tag = libraryInfoPanel;
+            checkoutBookPanel.Tag = libraryInfoPanel;
+
+            memberInfoPanel.Tag = viewMembersPanel;
+
+            viewMemberCheckedOutBooksPanel.Tag = memberInfoPanel;
+            memberReturnBookPanel.Tag = memberInfoPanel;
+            
         }
 
         private void bt_addBook_Click(object sender, EventArgs e)
         {
+            currentPanel = registerBookPanel;
             registerBookPanel.BringToFront();
+            bt_goBack.BringToFront();
 
         }
 
@@ -41,11 +68,17 @@ namespace Frontend
 
             await api.AddBookToSystem(title, author, genre);
             homePanel.BringToFront();
+            currentPanel = homePanel;
+            bt_goBack.BringToFront();
+
         }
 
         private void bt_addMember_Click(object sender, EventArgs e)
         {
             registerMemberPanel.BringToFront();
+            currentPanel = registerMemberPanel;
+            bt_goBack.BringToFront();
+
         }
 
         private async void bt_registerMemberSubmit_Click(object sender, EventArgs e)
@@ -55,11 +88,17 @@ namespace Frontend
             await api.RegisterMember(name);
 
             homePanel.BringToFront();
+            currentPanel = homePanel;
+            bt_goBack.BringToFront();
+
         }
 
         private void bt_addLibrary_Click(object sender, EventArgs e)
         {
             registerLibraryPanel.BringToFront();
+            currentPanel = registerLibraryPanel;
+            bt_goBack.BringToFront();
+
         }
 
         private async void bt_registerLibrarySubmit_Click(object sender, EventArgs e)
@@ -80,6 +119,9 @@ namespace Frontend
                 bt_registerLibrarySubmit.Enabled = true;
 
                 homePanel.BringToFront();
+                currentPanel = homePanel;
+                bt_goBack.BringToFront();
+
             }
 
         }
@@ -87,6 +129,9 @@ namespace Frontend
         private async void bt_viewLibraries_Click(object sender, EventArgs e)
         {
             viewLibrariesPanel.BringToFront();
+            currentPanel = viewLibrariesPanel;
+            bt_goBack.BringToFront();
+
             List<Library.Models.Library> libraries = await api.GetLibraries();
             for (int i = 0; i < libraries.Count; i++)
             {
@@ -111,6 +156,9 @@ namespace Frontend
 
             // sql.GetLibraryID(location, out object id);
             libraryInfoPanel.BringToFront();
+            currentPanel = libraryInfoPanel;
+            bt_goBack.BringToFront();
+
             libraryTitleLabel.Visible = true;
 
             libraryTitleLabel.Text = $"{location} Library";
@@ -121,6 +169,9 @@ namespace Frontend
         {
 
             viewMembersPanel.BringToFront();
+            currentPanel = viewMembersPanel;
+            bt_goBack.BringToFront();
+
             List<Member> members = await api.GetMembers();
             if (members == null || members.Count == 0)
                 return;
@@ -149,6 +200,9 @@ namespace Frontend
 
             string name = clickedButton.Text;
             memberInfoPanel.BringToFront();
+            currentPanel = memberInfoPanel;
+            bt_goBack.BringToFront();
+
             memberNameLabel.Text = name;
             currentMember = (int)clickedButton.Tag;
         }
@@ -156,6 +210,9 @@ namespace Frontend
         private async void bt_addLibraryBook_Click(object sender, EventArgs e)
         {
             addBookToLibraryPanel.BringToFront();
+            currentPanel = addBookToLibraryPanel;
+            bt_goBack.BringToFront();
+
             booksToAddToLibraryFLP.Controls.Clear();
             List<Book> books = await api.GetBooks();
             if (books == null || books.Count == 0)
@@ -181,6 +238,9 @@ namespace Frontend
         {
             Button ClickedButton = sender as Button;
             libraryInfoPanel.BringToFront();
+            currentPanel = libraryInfoPanel;
+            bt_goBack.BringToFront();
+
             currentBook = (int)ClickedButton.Tag;
 
             await api.AddBookToLibrary(currentBook, currentLibrary);
@@ -189,6 +249,8 @@ namespace Frontend
         private async void bt_checkoutBook_Click(object sender, EventArgs e)
         {
             checkoutBookPanel.BringToFront();
+            currentPanel = checkoutBookPanel;
+            bt_goBack.BringToFront();
 
             List<Member> members = await api.GetMembers();
             List<LibraryBook> libraryBooks = await api.GetAvailableBooksByLibrary(currentLibrary);
@@ -247,11 +309,17 @@ namespace Frontend
             memberCheckoutFLP.Controls.Clear();
 
             libraryInfoPanel.BringToFront();
+            currentPanel = libraryInfoPanel;
+            bt_goBack.BringToFront();
+
         }
 
         private async void bt_viewCheckedOutBooks_Click(object sender, EventArgs e)
         {
             viewLibraryCheckedOutBooksPanel.BringToFront();
+            currentPanel = viewLibraryCheckedOutBooksPanel;
+            bt_goBack.BringToFront();
+
 
             List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByLibrary(currentLibrary);
 
@@ -299,6 +367,9 @@ namespace Frontend
         private async void bt_viewMemberBooks_Click(object sender, EventArgs e)
         {
             viewMemberCheckedOutBooksPanel.BringToFront();
+            currentPanel = viewMemberCheckedOutBooksPanel;
+            bt_goBack.BringToFront();
+
 
             List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByMember(currentMember);
 
@@ -346,6 +417,9 @@ namespace Frontend
         private async void bt_returnBook_Click(object sender, EventArgs e)
         {
             memberReturnBookPanel.BringToFront();
+            currentPanel = memberReturnBookPanel;
+            bt_goBack.BringToFront();
+
             List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByMember(currentMember);
 
             for (int i = 0; i < checkedOutBooks.Count; i++)
@@ -401,6 +475,17 @@ namespace Frontend
         {
             await api.ReturnBook(currentMember, currentReturnBookId, currentReturnLibraryId, currentReturnMLBId);
             memberInfoPanel.BringToFront();
+            currentPanel = memberInfoPanel;
+            bt_goBack.BringToFront();
+
+        }
+
+        private void bt_goBack_Click(object sender, EventArgs e)
+        {
+            Panel previousPanel = (Panel)currentPanel.Tag;
+            previousPanel.BringToFront();
+            currentPanel = previousPanel;
+            bt_goBack.BringToFront();
         }
     }
 }

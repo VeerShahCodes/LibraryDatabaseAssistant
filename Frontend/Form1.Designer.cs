@@ -83,6 +83,7 @@
             bt_returnBookMemberSubmit = new Button();
             returnLibraryMemberChoiceFLP = new FlowLayoutPanel();
             returnBookMemberChoiceFLP = new FlowLayoutPanel();
+            bt_goBack = new Button();
             homePanel.SuspendLayout();
             registerBookPanel.SuspendLayout();
             registerMemberPanel.SuspendLayout();
@@ -106,9 +107,9 @@
             introLabel.AutoSize = true;
             introLabel.Font = new Font("Segoe UI", 20F);
             introLabel.ForeColor = SystemColors.ButtonFace;
-            introLabel.Location = new Point(114, 7);
+            introLabel.Location = new Point(130, 9);
             introLabel.Name = "introLabel";
-            introLabel.Size = new Size(403, 37);
+            introLabel.Size = new Size(510, 46);
             introLabel.TabIndex = 0;
             introLabel.Text = "Welcome to the Library Assistant";
             // 
@@ -123,19 +124,17 @@
             homePanel.Controls.Add(introLabel);
             homePanel.Dock = DockStyle.Fill;
             homePanel.Location = new Point(0, 0);
-            homePanel.Margin = new Padding(3, 2, 3, 2);
             homePanel.Name = "homePanel";
-            homePanel.Size = new Size(700, 338);
+            homePanel.Size = new Size(800, 451);
             homePanel.TabIndex = 1;
             // 
             // bt_viewMembers
             // 
             bt_viewMembers.BackColor = SystemColors.Desktop;
             bt_viewMembers.ForeColor = SystemColors.ButtonFace;
-            bt_viewMembers.Location = new Point(273, 194);
-            bt_viewMembers.Margin = new Padding(3, 2, 3, 2);
+            bt_viewMembers.Location = new Point(312, 259);
             bt_viewMembers.Name = "bt_viewMembers";
-            bt_viewMembers.Size = new Size(154, 22);
+            bt_viewMembers.Size = new Size(176, 29);
             bt_viewMembers.TabIndex = 5;
             bt_viewMembers.Text = "View Members";
             bt_viewMembers.UseVisualStyleBackColor = false;
@@ -145,10 +144,9 @@
             // 
             bt_viewLibraries.BackColor = SystemColors.Desktop;
             bt_viewLibraries.ForeColor = SystemColors.ButtonFace;
-            bt_viewLibraries.Location = new Point(273, 158);
-            bt_viewLibraries.Margin = new Padding(3, 2, 3, 2);
+            bt_viewLibraries.Location = new Point(312, 211);
             bt_viewLibraries.Name = "bt_viewLibraries";
-            bt_viewLibraries.Size = new Size(154, 22);
+            bt_viewLibraries.Size = new Size(176, 29);
             bt_viewLibraries.TabIndex = 4;
             bt_viewLibraries.Text = "View Libraries";
             bt_viewLibraries.UseVisualStyleBackColor = false;
@@ -158,10 +156,9 @@
             // 
             bt_addMember.BackColor = SystemColors.Desktop;
             bt_addMember.ForeColor = SystemColors.ButtonFace;
-            bt_addMember.Location = new Point(273, 307);
-            bt_addMember.Margin = new Padding(3, 2, 3, 2);
+            bt_addMember.Location = new Point(312, 409);
             bt_addMember.Name = "bt_addMember";
-            bt_addMember.Size = new Size(154, 22);
+            bt_addMember.Size = new Size(176, 29);
             bt_addMember.TabIndex = 3;
             bt_addMember.Text = "Register Member";
             bt_addMember.UseVisualStyleBackColor = false;
@@ -171,10 +168,9 @@
             // 
             bt_addLibrary.BackColor = SystemColors.Desktop;
             bt_addLibrary.ForeColor = SystemColors.ButtonFace;
-            bt_addLibrary.Location = new Point(536, 307);
-            bt_addLibrary.Margin = new Padding(3, 2, 3, 2);
+            bt_addLibrary.Location = new Point(613, 409);
             bt_addLibrary.Name = "bt_addLibrary";
-            bt_addLibrary.Size = new Size(154, 22);
+            bt_addLibrary.Size = new Size(176, 29);
             bt_addLibrary.TabIndex = 2;
             bt_addLibrary.Text = "Add Library to System";
             bt_addLibrary.UseVisualStyleBackColor = false;
@@ -184,10 +180,9 @@
             // 
             bt_addBook.BackColor = SystemColors.Desktop;
             bt_addBook.ForeColor = SystemColors.ButtonFace;
-            bt_addBook.Location = new Point(10, 307);
-            bt_addBook.Margin = new Padding(3, 2, 3, 2);
+            bt_addBook.Location = new Point(11, 409);
             bt_addBook.Name = "bt_addBook";
-            bt_addBook.Size = new Size(154, 22);
+            bt_addBook.Size = new Size(176, 29);
             bt_addBook.TabIndex = 1;
             bt_addBook.Text = "Add Book to System";
             bt_addBook.UseVisualStyleBackColor = false;
@@ -202,47 +197,53 @@
             registerBookPanel.Controls.Add(bt_addBookSubmit);
             registerBookPanel.Dock = DockStyle.Fill;
             registerBookPanel.Location = new Point(0, 0);
+            registerBookPanel.Margin = new Padding(3, 4, 3, 4);
             registerBookPanel.Name = "registerBookPanel";
-            registerBookPanel.Size = new Size(700, 338);
+            registerBookPanel.Size = new Size(800, 451);
             registerBookPanel.TabIndex = 6;
+            registerBookPanel.Tag = "homePanel";
             // 
             // tb_genre
             // 
             tb_genre.BackColor = SystemColors.Desktop;
             tb_genre.ForeColor = SystemColors.ButtonFace;
-            tb_genre.Location = new Point(285, 185);
+            tb_genre.Location = new Point(326, 247);
+            tb_genre.Margin = new Padding(3, 4, 3, 4);
             tb_genre.Name = "tb_genre";
             tb_genre.PlaceholderText = "Genre";
-            tb_genre.Size = new Size(100, 23);
+            tb_genre.Size = new Size(114, 27);
             tb_genre.TabIndex = 3;
             // 
             // tb_author
             // 
             tb_author.BackColor = SystemColors.Desktop;
             tb_author.ForeColor = SystemColors.ButtonFace;
-            tb_author.Location = new Point(285, 115);
+            tb_author.Location = new Point(326, 153);
+            tb_author.Margin = new Padding(3, 4, 3, 4);
             tb_author.Name = "tb_author";
             tb_author.PlaceholderText = "Author";
-            tb_author.Size = new Size(100, 23);
+            tb_author.Size = new Size(114, 27);
             tb_author.TabIndex = 2;
             // 
             // tb_title
             // 
             tb_title.BackColor = SystemColors.Desktop;
             tb_title.ForeColor = SystemColors.ButtonFace;
-            tb_title.Location = new Point(285, 47);
+            tb_title.Location = new Point(326, 63);
+            tb_title.Margin = new Padding(3, 4, 3, 4);
             tb_title.Name = "tb_title";
             tb_title.PlaceholderText = "Title";
-            tb_title.Size = new Size(100, 23);
+            tb_title.Size = new Size(114, 27);
             tb_title.TabIndex = 1;
             // 
             // bt_addBookSubmit
             // 
             bt_addBookSubmit.BackColor = SystemColors.Desktop;
             bt_addBookSubmit.ForeColor = SystemColors.ButtonFace;
-            bt_addBookSubmit.Location = new Point(310, 279);
+            bt_addBookSubmit.Location = new Point(354, 372);
+            bt_addBookSubmit.Margin = new Padding(3, 4, 3, 4);
             bt_addBookSubmit.Name = "bt_addBookSubmit";
-            bt_addBookSubmit.Size = new Size(75, 23);
+            bt_addBookSubmit.Size = new Size(86, 31);
             bt_addBookSubmit.TabIndex = 0;
             bt_addBookSubmit.Text = "Add";
             bt_addBookSubmit.UseVisualStyleBackColor = false;
@@ -255,27 +256,31 @@
             registerMemberPanel.Controls.Add(bt_registerMemberSubmit);
             registerMemberPanel.Dock = DockStyle.Fill;
             registerMemberPanel.Location = new Point(0, 0);
+            registerMemberPanel.Margin = new Padding(3, 4, 3, 4);
             registerMemberPanel.Name = "registerMemberPanel";
-            registerMemberPanel.Size = new Size(700, 338);
+            registerMemberPanel.Size = new Size(800, 451);
             registerMemberPanel.TabIndex = 6;
+            registerMemberPanel.Tag = "homePanel";
             // 
             // tb_name
             // 
             tb_name.BackColor = SystemColors.Desktop;
             tb_name.ForeColor = SystemColors.ButtonFace;
-            tb_name.Location = new Point(294, 130);
+            tb_name.Location = new Point(336, 173);
+            tb_name.Margin = new Padding(3, 4, 3, 4);
             tb_name.Name = "tb_name";
             tb_name.PlaceholderText = "Name";
-            tb_name.Size = new Size(100, 23);
+            tb_name.Size = new Size(114, 27);
             tb_name.TabIndex = 1;
             // 
             // bt_registerMemberSubmit
             // 
             bt_registerMemberSubmit.BackColor = SystemColors.Desktop;
             bt_registerMemberSubmit.ForeColor = SystemColors.ButtonFace;
-            bt_registerMemberSubmit.Location = new Point(310, 265);
+            bt_registerMemberSubmit.Location = new Point(354, 353);
+            bt_registerMemberSubmit.Margin = new Padding(3, 4, 3, 4);
             bt_registerMemberSubmit.Name = "bt_registerMemberSubmit";
-            bt_registerMemberSubmit.Size = new Size(75, 23);
+            bt_registerMemberSubmit.Size = new Size(86, 31);
             bt_registerMemberSubmit.TabIndex = 0;
             bt_registerMemberSubmit.Text = "Register";
             bt_registerMemberSubmit.UseVisualStyleBackColor = false;
@@ -288,27 +293,31 @@
             registerLibraryPanel.Controls.Add(bt_registerLibrarySubmit);
             registerLibraryPanel.Dock = DockStyle.Fill;
             registerLibraryPanel.Location = new Point(0, 0);
+            registerLibraryPanel.Margin = new Padding(3, 4, 3, 4);
             registerLibraryPanel.Name = "registerLibraryPanel";
-            registerLibraryPanel.Size = new Size(700, 338);
+            registerLibraryPanel.Size = new Size(800, 451);
             registerLibraryPanel.TabIndex = 6;
+            registerLibraryPanel.Tag = "homePanel";
             // 
             // tb_libraryLocation
             // 
             tb_libraryLocation.BackColor = SystemColors.Desktop;
             tb_libraryLocation.ForeColor = SystemColors.ButtonFace;
-            tb_libraryLocation.Location = new Point(294, 130);
+            tb_libraryLocation.Location = new Point(336, 173);
+            tb_libraryLocation.Margin = new Padding(3, 4, 3, 4);
             tb_libraryLocation.Name = "tb_libraryLocation";
             tb_libraryLocation.PlaceholderText = "Location";
-            tb_libraryLocation.Size = new Size(100, 23);
+            tb_libraryLocation.Size = new Size(114, 27);
             tb_libraryLocation.TabIndex = 1;
             // 
             // bt_registerLibrarySubmit
             // 
             bt_registerLibrarySubmit.BackColor = SystemColors.Desktop;
             bt_registerLibrarySubmit.ForeColor = SystemColors.ButtonFace;
-            bt_registerLibrarySubmit.Location = new Point(310, 250);
+            bt_registerLibrarySubmit.Location = new Point(354, 333);
+            bt_registerLibrarySubmit.Margin = new Padding(3, 4, 3, 4);
             bt_registerLibrarySubmit.Name = "bt_registerLibrarySubmit";
-            bt_registerLibrarySubmit.Size = new Size(75, 23);
+            bt_registerLibrarySubmit.Size = new Size(86, 31);
             bt_registerLibrarySubmit.TabIndex = 0;
             bt_registerLibrarySubmit.Text = "Register";
             bt_registerLibrarySubmit.UseVisualStyleBackColor = false;
@@ -320,25 +329,29 @@
             viewLibrariesPanel.Controls.Add(libraryViewerFLP);
             viewLibrariesPanel.Dock = DockStyle.Fill;
             viewLibrariesPanel.Location = new Point(0, 0);
+            viewLibrariesPanel.Margin = new Padding(3, 4, 3, 4);
             viewLibrariesPanel.Name = "viewLibrariesPanel";
-            viewLibrariesPanel.Size = new Size(700, 338);
+            viewLibrariesPanel.Size = new Size(800, 451);
             viewLibrariesPanel.TabIndex = 6;
+            viewLibrariesPanel.Tag = "homePanel";
             // 
             // libraryViewerFLP
             // 
             libraryViewerFLP.Controls.Add(placeholderLibraryButton);
-            libraryViewerFLP.Location = new Point(12, 12);
+            libraryViewerFLP.Location = new Point(14, 16);
+            libraryViewerFLP.Margin = new Padding(3, 4, 3, 4);
             libraryViewerFLP.Name = "libraryViewerFLP";
-            libraryViewerFLP.Size = new Size(678, 317);
+            libraryViewerFLP.Size = new Size(775, 423);
             libraryViewerFLP.TabIndex = 0;
             // 
             // placeholderLibraryButton
             // 
             placeholderLibraryButton.BackColor = SystemColors.Desktop;
             placeholderLibraryButton.ForeColor = SystemColors.ButtonFace;
-            placeholderLibraryButton.Location = new Point(3, 3);
+            placeholderLibraryButton.Location = new Point(3, 4);
+            placeholderLibraryButton.Margin = new Padding(3, 4, 3, 4);
             placeholderLibraryButton.Name = "placeholderLibraryButton";
-            placeholderLibraryButton.Size = new Size(75, 23);
+            placeholderLibraryButton.Size = new Size(86, 31);
             placeholderLibraryButton.TabIndex = 0;
             placeholderLibraryButton.Text = "library";
             placeholderLibraryButton.UseVisualStyleBackColor = false;
@@ -354,17 +367,20 @@
             libraryInfoPanel.Controls.Add(libraryTitleLabel);
             libraryInfoPanel.Dock = DockStyle.Fill;
             libraryInfoPanel.Location = new Point(0, 0);
+            libraryInfoPanel.Margin = new Padding(3, 4, 3, 4);
             libraryInfoPanel.Name = "libraryInfoPanel";
-            libraryInfoPanel.Size = new Size(700, 338);
+            libraryInfoPanel.Size = new Size(800, 451);
             libraryInfoPanel.TabIndex = 6;
+            libraryInfoPanel.Tag = "viewLibrariesPanel";
             // 
             // bt_checkoutBook
             // 
             bt_checkoutBook.BackColor = SystemColors.Desktop;
             bt_checkoutBook.ForeColor = SystemColors.ButtonFace;
-            bt_checkoutBook.Location = new Point(536, 304);
+            bt_checkoutBook.Location = new Point(613, 405);
+            bt_checkoutBook.Margin = new Padding(3, 4, 3, 4);
             bt_checkoutBook.Name = "bt_checkoutBook";
-            bt_checkoutBook.Size = new Size(104, 23);
+            bt_checkoutBook.Size = new Size(119, 31);
             bt_checkoutBook.TabIndex = 3;
             bt_checkoutBook.Text = "Checkout Book";
             bt_checkoutBook.UseVisualStyleBackColor = false;
@@ -374,9 +390,10 @@
             // 
             bt_addLibraryBook.BackColor = SystemColors.Desktop;
             bt_addLibraryBook.ForeColor = SystemColors.ButtonFace;
-            bt_addLibraryBook.Location = new Point(272, 304);
+            bt_addLibraryBook.Location = new Point(311, 405);
+            bt_addLibraryBook.Margin = new Padding(3, 4, 3, 4);
             bt_addLibraryBook.Name = "bt_addLibraryBook";
-            bt_addLibraryBook.Size = new Size(104, 23);
+            bt_addLibraryBook.Size = new Size(119, 31);
             bt_addLibraryBook.TabIndex = 2;
             bt_addLibraryBook.Text = "Add Book";
             bt_addLibraryBook.UseVisualStyleBackColor = false;
@@ -386,9 +403,10 @@
             // 
             bt_viewCheckedOutBooks.BackColor = SystemColors.Desktop;
             bt_viewCheckedOutBooks.ForeColor = SystemColors.ButtonFace;
-            bt_viewCheckedOutBooks.Location = new Point(242, 73);
+            bt_viewCheckedOutBooks.Location = new Point(277, 97);
+            bt_viewCheckedOutBooks.Margin = new Padding(3, 4, 3, 4);
             bt_viewCheckedOutBooks.Name = "bt_viewCheckedOutBooks";
-            bt_viewCheckedOutBooks.Size = new Size(185, 23);
+            bt_viewCheckedOutBooks.Size = new Size(211, 31);
             bt_viewCheckedOutBooks.TabIndex = 1;
             bt_viewCheckedOutBooks.Text = "View Checked Out Books";
             bt_viewCheckedOutBooks.UseVisualStyleBackColor = false;
@@ -398,9 +416,9 @@
             // 
             libraryTitleLabel.Font = new Font("Segoe UI", 20F);
             libraryTitleLabel.ForeColor = SystemColors.ButtonFace;
-            libraryTitleLabel.Location = new Point(193, 6);
+            libraryTitleLabel.Location = new Point(221, 8);
             libraryTitleLabel.Name = "libraryTitleLabel";
-            libraryTitleLabel.Size = new Size(300, 37);
+            libraryTitleLabel.Size = new Size(343, 49);
             libraryTitleLabel.TabIndex = 0;
             libraryTitleLabel.Text = "Library";
             libraryTitleLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -412,17 +430,15 @@
             viewMembersPanel.Controls.Add(memberViewerFLP);
             viewMembersPanel.Dock = DockStyle.Fill;
             viewMembersPanel.Location = new Point(0, 0);
-            viewMembersPanel.Margin = new Padding(3, 2, 3, 2);
             viewMembersPanel.Name = "viewMembersPanel";
-            viewMembersPanel.Size = new Size(700, 338);
+            viewMembersPanel.Size = new Size(800, 451);
             viewMembersPanel.TabIndex = 6;
             // 
             // memberViewerFLP
             // 
-            memberViewerFLP.Location = new Point(32, 15);
-            memberViewerFLP.Margin = new Padding(3, 2, 3, 2);
+            memberViewerFLP.Location = new Point(37, 20);
             memberViewerFLP.Name = "memberViewerFLP";
-            memberViewerFLP.Size = new Size(640, 297);
+            memberViewerFLP.Size = new Size(731, 396);
             memberViewerFLP.TabIndex = 0;
             // 
             // memberInfoPanel
@@ -434,18 +450,19 @@
             memberInfoPanel.Controls.Add(memberNameLabel);
             memberInfoPanel.Dock = DockStyle.Fill;
             memberInfoPanel.Location = new Point(0, 0);
-            memberInfoPanel.Margin = new Padding(3, 2, 3, 2);
             memberInfoPanel.Name = "memberInfoPanel";
-            memberInfoPanel.Size = new Size(700, 338);
+            memberInfoPanel.Size = new Size(800, 451);
             memberInfoPanel.TabIndex = 1;
+            memberInfoPanel.Tag = "viewMembersPanel";
             // 
             // bt_memberCheckoutBook
             // 
             bt_memberCheckoutBook.BackColor = SystemColors.Desktop;
             bt_memberCheckoutBook.ForeColor = SystemColors.ButtonFace;
-            bt_memberCheckoutBook.Location = new Point(273, 157);
+            bt_memberCheckoutBook.Location = new Point(312, 209);
+            bt_memberCheckoutBook.Margin = new Padding(3, 4, 3, 4);
             bt_memberCheckoutBook.Name = "bt_memberCheckoutBook";
-            bt_memberCheckoutBook.Size = new Size(125, 23);
+            bt_memberCheckoutBook.Size = new Size(143, 31);
             bt_memberCheckoutBook.TabIndex = 3;
             bt_memberCheckoutBook.Text = "Checkout Book";
             bt_memberCheckoutBook.UseVisualStyleBackColor = false;
@@ -455,9 +472,10 @@
             // 
             bt_returnBook.BackColor = SystemColors.Desktop;
             bt_returnBook.ForeColor = SystemColors.ButtonFace;
-            bt_returnBook.Location = new Point(285, 114);
+            bt_returnBook.Location = new Point(326, 152);
+            bt_returnBook.Margin = new Padding(3, 4, 3, 4);
             bt_returnBook.Name = "bt_returnBook";
-            bt_returnBook.Size = new Size(107, 23);
+            bt_returnBook.Size = new Size(122, 31);
             bt_returnBook.TabIndex = 2;
             bt_returnBook.Text = "Return Book";
             bt_returnBook.UseVisualStyleBackColor = false;
@@ -467,9 +485,10 @@
             // 
             bt_viewMemberBooks.BackColor = SystemColors.Desktop;
             bt_viewMemberBooks.ForeColor = SystemColors.ButtonFace;
-            bt_viewMemberBooks.Location = new Point(259, 74);
+            bt_viewMemberBooks.Location = new Point(296, 99);
+            bt_viewMemberBooks.Margin = new Padding(3, 4, 3, 4);
             bt_viewMemberBooks.Name = "bt_viewMemberBooks";
-            bt_viewMemberBooks.Size = new Size(150, 23);
+            bt_viewMemberBooks.Size = new Size(171, 31);
             bt_viewMemberBooks.TabIndex = 1;
             bt_viewMemberBooks.Text = "View Checked Out Books";
             bt_viewMemberBooks.UseVisualStyleBackColor = false;
@@ -480,9 +499,9 @@
             memberNameLabel.AutoSize = true;
             memberNameLabel.Font = new Font("Segoe UI", 20F);
             memberNameLabel.ForeColor = SystemColors.ButtonFace;
-            memberNameLabel.Location = new Point(298, 12);
+            memberNameLabel.Location = new Point(341, 16);
             memberNameLabel.Name = "memberNameLabel";
-            memberNameLabel.Size = new Size(88, 37);
+            memberNameLabel.Size = new Size(109, 46);
             memberNameLabel.TabIndex = 0;
             memberNameLabel.Text = "Name";
             memberNameLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -493,15 +512,18 @@
             addBookToLibraryPanel.Controls.Add(booksToAddToLibraryFLP);
             addBookToLibraryPanel.Dock = DockStyle.Fill;
             addBookToLibraryPanel.Location = new Point(0, 0);
+            addBookToLibraryPanel.Margin = new Padding(3, 4, 3, 4);
             addBookToLibraryPanel.Name = "addBookToLibraryPanel";
-            addBookToLibraryPanel.Size = new Size(700, 338);
+            addBookToLibraryPanel.Size = new Size(800, 451);
             addBookToLibraryPanel.TabIndex = 4;
+            addBookToLibraryPanel.Tag = "libraryInfoPanel";
             // 
             // booksToAddToLibraryFLP
             // 
-            booksToAddToLibraryFLP.Location = new Point(49, 29);
+            booksToAddToLibraryFLP.Location = new Point(56, 39);
+            booksToAddToLibraryFLP.Margin = new Padding(3, 4, 3, 4);
             booksToAddToLibraryFLP.Name = "booksToAddToLibraryFLP";
-            booksToAddToLibraryFLP.Size = new Size(592, 283);
+            booksToAddToLibraryFLP.Size = new Size(677, 377);
             booksToAddToLibraryFLP.TabIndex = 0;
             // 
             // checkoutBookPanel
@@ -512,17 +534,20 @@
             checkoutBookPanel.Controls.Add(bookCheckoutFLP);
             checkoutBookPanel.Dock = DockStyle.Fill;
             checkoutBookPanel.Location = new Point(0, 0);
+            checkoutBookPanel.Margin = new Padding(3, 4, 3, 4);
             checkoutBookPanel.Name = "checkoutBookPanel";
-            checkoutBookPanel.Size = new Size(700, 338);
+            checkoutBookPanel.Size = new Size(800, 451);
             checkoutBookPanel.TabIndex = 1;
+            checkoutBookPanel.Tag = "libraryInfoPanel";
             // 
             // bt_confirmCheckout
             // 
             bt_confirmCheckout.BackColor = SystemColors.Desktop;
             bt_confirmCheckout.ForeColor = SystemColors.ButtonFace;
-            bt_confirmCheckout.Location = new Point(613, 130);
+            bt_confirmCheckout.Location = new Point(701, 173);
+            bt_confirmCheckout.Margin = new Padding(3, 4, 3, 4);
             bt_confirmCheckout.Name = "bt_confirmCheckout";
-            bt_confirmCheckout.Size = new Size(75, 23);
+            bt_confirmCheckout.Size = new Size(86, 31);
             bt_confirmCheckout.TabIndex = 2;
             bt_confirmCheckout.Text = "Confirm";
             bt_confirmCheckout.UseVisualStyleBackColor = false;
@@ -530,16 +555,18 @@
             // 
             // memberCheckoutFLP
             // 
-            memberCheckoutFLP.Location = new Point(308, 19);
+            memberCheckoutFLP.Location = new Point(352, 25);
+            memberCheckoutFLP.Margin = new Padding(3, 4, 3, 4);
             memberCheckoutFLP.Name = "memberCheckoutFLP";
-            memberCheckoutFLP.Size = new Size(277, 307);
+            memberCheckoutFLP.Size = new Size(317, 409);
             memberCheckoutFLP.TabIndex = 1;
             // 
             // bookCheckoutFLP
             // 
-            bookCheckoutFLP.Location = new Point(15, 15);
+            bookCheckoutFLP.Location = new Point(17, 20);
+            bookCheckoutFLP.Margin = new Padding(3, 4, 3, 4);
             bookCheckoutFLP.Name = "bookCheckoutFLP";
-            bookCheckoutFLP.Size = new Size(277, 311);
+            bookCheckoutFLP.Size = new Size(317, 415);
             bookCheckoutFLP.TabIndex = 0;
             // 
             // viewLibraryCheckedOutBooksPanel
@@ -548,9 +575,11 @@
             viewLibraryCheckedOutBooksPanel.Controls.Add(checkedOutBookDisplay);
             viewLibraryCheckedOutBooksPanel.Dock = DockStyle.Fill;
             viewLibraryCheckedOutBooksPanel.Location = new Point(0, 0);
+            viewLibraryCheckedOutBooksPanel.Margin = new Padding(3, 4, 3, 4);
             viewLibraryCheckedOutBooksPanel.Name = "viewLibraryCheckedOutBooksPanel";
-            viewLibraryCheckedOutBooksPanel.Size = new Size(700, 338);
+            viewLibraryCheckedOutBooksPanel.Size = new Size(800, 451);
             viewLibraryCheckedOutBooksPanel.TabIndex = 4;
+            viewLibraryCheckedOutBooksPanel.Tag = "libraryInfoPanel";
             // 
             // checkedOutBookDisplay
             // 
@@ -558,19 +587,18 @@
             checkedOutBookDisplay.Controls.Add(libraryLabel);
             checkedOutBookDisplay.Controls.Add(titleLabel);
             checkedOutBookDisplay.Controls.Add(memberLabel);
-            checkedOutBookDisplay.Location = new Point(40, 20);
-            checkedOutBookDisplay.Margin = new Padding(3, 2, 3, 2);
+            checkedOutBookDisplay.Location = new Point(46, 27);
             checkedOutBookDisplay.Name = "checkedOutBookDisplay";
-            checkedOutBookDisplay.Size = new Size(632, 307);
+            checkedOutBookDisplay.Size = new Size(722, 409);
             checkedOutBookDisplay.TabIndex = 0;
             // 
             // timeLabel
             // 
             timeLabel.AutoSize = true;
             timeLabel.ForeColor = SystemColors.ButtonFace;
-            timeLabel.Location = new Point(459, 12);
+            timeLabel.Location = new Point(525, 16);
             timeLabel.Name = "timeLabel";
-            timeLabel.Size = new Size(102, 15);
+            timeLabel.Size = new Size(125, 20);
             timeLabel.TabIndex = 3;
             timeLabel.Text = "Time of Checkout";
             // 
@@ -578,9 +606,9 @@
             // 
             libraryLabel.AutoSize = true;
             libraryLabel.ForeColor = SystemColors.ButtonFace;
-            libraryLabel.Location = new Point(304, 12);
+            libraryLabel.Location = new Point(347, 16);
             libraryLabel.Name = "libraryLabel";
-            libraryLabel.Size = new Size(43, 15);
+            libraryLabel.Size = new Size(54, 20);
             libraryLabel.TabIndex = 2;
             libraryLabel.Text = "Library";
             // 
@@ -588,9 +616,9 @@
             // 
             titleLabel.AutoSize = true;
             titleLabel.ForeColor = SystemColors.ButtonFace;
-            titleLabel.Location = new Point(172, 12);
+            titleLabel.Location = new Point(197, 16);
             titleLabel.Name = "titleLabel";
-            titleLabel.Size = new Size(30, 15);
+            titleLabel.Size = new Size(38, 20);
             titleLabel.TabIndex = 1;
             titleLabel.Text = "Title";
             // 
@@ -598,9 +626,9 @@
             // 
             memberLabel.AutoSize = true;
             memberLabel.ForeColor = SystemColors.ButtonFace;
-            memberLabel.Location = new Point(39, 12);
+            memberLabel.Location = new Point(45, 16);
             memberLabel.Name = "memberLabel";
-            memberLabel.Size = new Size(52, 15);
+            memberLabel.Size = new Size(65, 20);
             memberLabel.TabIndex = 0;
             memberLabel.Text = "Member";
             // 
@@ -610,9 +638,11 @@
             viewMemberCheckedOutBooksPanel.Controls.Add(memberCheckedOutBooksDisplay);
             viewMemberCheckedOutBooksPanel.Dock = DockStyle.Fill;
             viewMemberCheckedOutBooksPanel.Location = new Point(0, 0);
+            viewMemberCheckedOutBooksPanel.Margin = new Padding(3, 4, 3, 4);
             viewMemberCheckedOutBooksPanel.Name = "viewMemberCheckedOutBooksPanel";
-            viewMemberCheckedOutBooksPanel.Size = new Size(700, 338);
+            viewMemberCheckedOutBooksPanel.Size = new Size(800, 451);
             viewMemberCheckedOutBooksPanel.TabIndex = 4;
+            viewMemberCheckedOutBooksPanel.Tag = "memberInfoPanel";
             // 
             // memberCheckedOutBooksDisplay
             // 
@@ -620,18 +650,19 @@
             memberCheckedOutBooksDisplay.Controls.Add(bookLabelTwo);
             memberCheckedOutBooksDisplay.Controls.Add(libraryLabelTwo);
             memberCheckedOutBooksDisplay.Controls.Add(memberLabel2);
-            memberCheckedOutBooksDisplay.Location = new Point(22, 19);
+            memberCheckedOutBooksDisplay.Location = new Point(25, 25);
+            memberCheckedOutBooksDisplay.Margin = new Padding(3, 4, 3, 4);
             memberCheckedOutBooksDisplay.Name = "memberCheckedOutBooksDisplay";
-            memberCheckedOutBooksDisplay.Size = new Size(650, 310);
+            memberCheckedOutBooksDisplay.Size = new Size(743, 413);
             memberCheckedOutBooksDisplay.TabIndex = 0;
             // 
             // timeLabelTwo
             // 
             timeLabelTwo.AutoSize = true;
             timeLabelTwo.ForeColor = SystemColors.ButtonFace;
-            timeLabelTwo.Location = new Point(478, 18);
+            timeLabelTwo.Location = new Point(546, 24);
             timeLabelTwo.Name = "timeLabelTwo";
-            timeLabelTwo.Size = new Size(102, 15);
+            timeLabelTwo.Size = new Size(125, 20);
             timeLabelTwo.TabIndex = 3;
             timeLabelTwo.Text = "Time of Checkout";
             // 
@@ -639,9 +670,9 @@
             // 
             bookLabelTwo.AutoSize = true;
             bookLabelTwo.ForeColor = SystemColors.ButtonFace;
-            bookLabelTwo.Location = new Point(353, 18);
+            bookLabelTwo.Location = new Point(403, 24);
             bookLabelTwo.Name = "bookLabelTwo";
-            bookLabelTwo.Size = new Size(34, 15);
+            bookLabelTwo.Size = new Size(43, 20);
             bookLabelTwo.TabIndex = 2;
             bookLabelTwo.Text = "Book";
             // 
@@ -649,9 +680,9 @@
             // 
             libraryLabelTwo.AutoSize = true;
             libraryLabelTwo.ForeColor = SystemColors.ButtonFace;
-            libraryLabelTwo.Location = new Point(190, 18);
+            libraryLabelTwo.Location = new Point(217, 24);
             libraryLabelTwo.Name = "libraryLabelTwo";
-            libraryLabelTwo.Size = new Size(43, 15);
+            libraryLabelTwo.Size = new Size(54, 20);
             libraryLabelTwo.TabIndex = 1;
             libraryLabelTwo.Text = "Library";
             // 
@@ -659,9 +690,9 @@
             // 
             memberLabel2.AutoSize = true;
             memberLabel2.ForeColor = SystemColors.ButtonFace;
-            memberLabel2.Location = new Point(35, 18);
+            memberLabel2.Location = new Point(40, 24);
             memberLabel2.Name = "memberLabel2";
-            memberLabel2.Size = new Size(52, 15);
+            memberLabel2.Size = new Size(65, 20);
             memberLabel2.TabIndex = 0;
             memberLabel2.Text = "Member";
             // 
@@ -673,17 +704,20 @@
             memberReturnBookPanel.Controls.Add(returnBookMemberChoiceFLP);
             memberReturnBookPanel.Dock = DockStyle.Fill;
             memberReturnBookPanel.Location = new Point(0, 0);
+            memberReturnBookPanel.Margin = new Padding(3, 4, 3, 4);
             memberReturnBookPanel.Name = "memberReturnBookPanel";
-            memberReturnBookPanel.Size = new Size(700, 338);
+            memberReturnBookPanel.Size = new Size(800, 451);
             memberReturnBookPanel.TabIndex = 4;
+            memberReturnBookPanel.Tag = "memberInfoPanel";
             // 
             // bt_returnBookMemberSubmit
             // 
             bt_returnBookMemberSubmit.BackColor = SystemColors.Desktop;
             bt_returnBookMemberSubmit.ForeColor = SystemColors.ButtonFace;
-            bt_returnBookMemberSubmit.Location = new Point(613, 146);
+            bt_returnBookMemberSubmit.Location = new Point(701, 195);
+            bt_returnBookMemberSubmit.Margin = new Padding(3, 4, 3, 4);
             bt_returnBookMemberSubmit.Name = "bt_returnBookMemberSubmit";
-            bt_returnBookMemberSubmit.Size = new Size(75, 47);
+            bt_returnBookMemberSubmit.Size = new Size(86, 63);
             bt_returnBookMemberSubmit.TabIndex = 2;
             bt_returnBookMemberSubmit.Text = "Return Book";
             bt_returnBookMemberSubmit.UseVisualStyleBackColor = false;
@@ -691,23 +725,38 @@
             // 
             // returnLibraryMemberChoiceFLP
             // 
-            returnLibraryMemberChoiceFLP.Location = new Point(317, 15);
+            returnLibraryMemberChoiceFLP.Location = new Point(362, 20);
+            returnLibraryMemberChoiceFLP.Margin = new Padding(3, 4, 3, 4);
             returnLibraryMemberChoiceFLP.Name = "returnLibraryMemberChoiceFLP";
-            returnLibraryMemberChoiceFLP.Size = new Size(284, 308);
+            returnLibraryMemberChoiceFLP.Size = new Size(325, 411);
             returnLibraryMemberChoiceFLP.TabIndex = 1;
             // 
             // returnBookMemberChoiceFLP
             // 
-            returnBookMemberChoiceFLP.Location = new Point(20, 16);
+            returnBookMemberChoiceFLP.Location = new Point(23, 21);
+            returnBookMemberChoiceFLP.Margin = new Padding(3, 4, 3, 4);
             returnBookMemberChoiceFLP.Name = "returnBookMemberChoiceFLP";
-            returnBookMemberChoiceFLP.Size = new Size(284, 308);
+            returnBookMemberChoiceFLP.Size = new Size(325, 411);
             returnBookMemberChoiceFLP.TabIndex = 0;
+            // 
+            // bt_goBack
+            // 
+            bt_goBack.BackColor = SystemColors.Desktop;
+            bt_goBack.ForeColor = SystemColors.Control;
+            bt_goBack.Location = new Point(0, 0);
+            bt_goBack.Name = "bt_goBack";
+            bt_goBack.Size = new Size(94, 29);
+            bt_goBack.TabIndex = 3;
+            bt_goBack.Text = "Go Back";
+            bt_goBack.UseVisualStyleBackColor = false;
+            bt_goBack.Click += bt_goBack_Click;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 338);
+            ClientSize = new Size(800, 451);
+            Controls.Add(bt_goBack);
             Controls.Add(memberReturnBookPanel);
             Controls.Add(memberInfoPanel);
             Controls.Add(viewMembersPanel);
@@ -721,7 +770,6 @@
             Controls.Add(viewLibraryCheckedOutBooksPanel);
             Controls.Add(libraryInfoPanel);
             Controls.Add(viewMemberCheckedOutBooksPanel);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
             Text = "Form1";
             homePanel.ResumeLayout(false);
@@ -807,5 +855,6 @@
         private FlowLayoutPanel returnLibraryMemberChoiceFLP;
         private FlowLayoutPanel returnBookMemberChoiceFLP;
         private Button bt_returnBookMemberSubmit;
+        private Button bt_goBack;
     }
 }
