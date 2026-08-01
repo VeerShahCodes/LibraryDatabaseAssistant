@@ -21,6 +21,9 @@ namespace Frontend
         int currentReturnMLBId = -1;
         int currentReturnLibraryId = -1;
 
+        int currentMemberCheckoutBookId = -1;
+        int currentMemberCheckoutLibraryId = -1;
+
         Panel currentPanel;
         public Form1()
         {
@@ -49,7 +52,8 @@ namespace Frontend
 
             viewMemberCheckedOutBooksPanel.Tag = memberInfoPanel;
             memberReturnBookPanel.Tag = memberInfoPanel;
-            
+            memberCheckoutBookPanel.Tag = memberInfoPanel;
+
         }
 
         private void bt_addBook_Click(object sender, EventArgs e)
@@ -128,6 +132,7 @@ namespace Frontend
 
         private async void bt_viewLibraries_Click(object sender, EventArgs e)
         {
+            libraryViewerFLP.Controls.Clear();
             viewLibrariesPanel.BringToFront();
             currentPanel = viewLibrariesPanel;
             bt_goBack.BringToFront();
@@ -167,7 +172,7 @@ namespace Frontend
 
         private async void bt_viewMembers_Click(object sender, EventArgs e)
         {
-
+            memberViewerFLP.Controls.Clear();
             viewMembersPanel.BringToFront();
             currentPanel = viewMembersPanel;
             bt_goBack.BringToFront();
@@ -209,6 +214,7 @@ namespace Frontend
 
         private async void bt_addLibraryBook_Click(object sender, EventArgs e)
         {
+            booksToAddToLibraryFLP.Controls.Clear();
             addBookToLibraryPanel.BringToFront();
             currentPanel = addBookToLibraryPanel;
             bt_goBack.BringToFront();
@@ -248,6 +254,8 @@ namespace Frontend
 
         private async void bt_checkoutBook_Click(object sender, EventArgs e)
         {
+            memberCheckoutFLP.Controls.Clear();
+            bookCheckoutFLP.Controls.Clear();
             checkoutBookPanel.BringToFront();
             currentPanel = checkoutBookPanel;
             bt_goBack.BringToFront();
@@ -316,6 +324,7 @@ namespace Frontend
 
         private async void bt_viewCheckedOutBooks_Click(object sender, EventArgs e)
         {
+            checkedOutBookDisplay.Controls.Clear();
             viewLibraryCheckedOutBooksPanel.BringToFront();
             currentPanel = viewLibraryCheckedOutBooksPanel;
             bt_goBack.BringToFront();
@@ -366,6 +375,7 @@ namespace Frontend
 
         private async void bt_viewMemberBooks_Click(object sender, EventArgs e)
         {
+            memberCheckedOutBooksDisplay.Controls.Clear();
             viewMemberCheckedOutBooksPanel.BringToFront();
             currentPanel = viewMemberCheckedOutBooksPanel;
             bt_goBack.BringToFront();
@@ -419,7 +429,8 @@ namespace Frontend
             memberReturnBookPanel.BringToFront();
             currentPanel = memberReturnBookPanel;
             bt_goBack.BringToFront();
-
+            returnBookMemberChoiceFLP.Controls.Clear();
+            returnLibraryMemberChoiceFLP.Controls.Clear();
             List<MemberLibraryBook> checkedOutBooks = await api.GetCheckedOutBooksByMember(currentMember);
 
             for (int i = 0; i < checkedOutBooks.Count; i++)
@@ -466,9 +477,57 @@ namespace Frontend
             currentReturnMLBId = book.id;
         }
 
-        private void bt_memberCheckoutBook_Click(object sender, EventArgs e)
+        private async void bt_memberCheckoutBook_Click(object sender, EventArgs e)
         {
+            memberCheckoutLibraryFLP.Controls.Clear();
+            memberCheckoutBookFLP.Controls.Clear();
+            memberCheckoutBookPanel.BringToFront();
+            currentPanel = memberCheckoutBookPanel;
+            bt_goBack.BringToFront();
 
+            List<Library.Models.Library> libraries = await api.GetLibraries();
+            for (int i = 0; i < libraries.Count; i++)
+            {
+                Button button = new Button();
+                button.Text = libraries[i].location;
+                button.BackColor = SystemColors.Desktop;
+                button.ForeColor = SystemColors.ButtonFace;
+                button.Font = new Font(FontFamily.GenericSerif, 13);
+                button.Click += LibraryCheckoutChoice_Click;
+                button.Tag = libraries[i].id;
+                button.AutoSize = true;
+                memberCheckoutLibraryFLP.Controls.Add(button);
+            }
+        }
+
+        private async void LibraryCheckoutChoice_Click(object sender, EventArgs e)
+        {
+            memberCheckoutBookFLP.Controls.Clear();
+            Button clickedButton = sender as Button;
+            int library_id = (int)clickedButton.Tag;
+            currentMemberCheckoutLibraryId = library_id;
+            List<LibraryBook> books = await api.GetAvailableBooksByLibrary(library_id);
+            for(int i = 0; i < books.Count; i++)
+            {
+                if (books[i].quantity > 0)
+                {
+                    Book book = await api.GetBookById(books[i].bookId);
+                    Button button = new Button();
+                    button.Text = book.title;
+                    button.BackColor = SystemColors.Desktop;
+                    button.ForeColor = SystemColors.ButtonFace;
+                    button.Font = new Font(FontFamily.GenericSerif, 13);
+                    button.Click += BookCheckoutChoice_Click;
+                    button.Tag = books[i].bookId;
+                    button.AutoSize = true;
+                    memberCheckoutBookFLP.Controls.Add(button);
+                }
+            }
+        }
+
+        private void BookCheckoutChoice_Click(object sender, EventArgs e)
+        {
+            currentMemberCheckoutBookId = (int)((Button)sender).Tag;
         }
 
         private async void bt_returnBookMemberSubmit_Click(object sender, EventArgs e)
@@ -485,6 +544,26 @@ namespace Frontend
             Panel previousPanel = (Panel)currentPanel.Tag;
             previousPanel.BringToFront();
             currentPanel = previousPanel;
+            bt_goBack.BringToFront();
+        }
+
+        private async void bt_memberCheckoutSubmit_Click(object sender, EventArgs e)
+        {
+            if (currentMemberCheckoutBookId != -1 && currentMemberCheckoutLibraryId != -1)
+            {
+                await api.CheckoutBook(currentMember, currentMemberCheckoutBookId, currentMemberCheckoutLibraryId);
+
+            }
+            else
+            {
+                Console.WriteLine("Incomplete selection");
+            }
+
+            currentMemberCheckoutBookId = -1;
+            currentMemberCheckoutLibraryId = -1;
+
+            memberInfoPanel.BringToFront();
+            currentPanel = memberInfoPanel;
             bt_goBack.BringToFront();
         }
     }

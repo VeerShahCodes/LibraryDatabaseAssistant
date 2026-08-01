@@ -84,6 +84,10 @@
             returnLibraryMemberChoiceFLP = new FlowLayoutPanel();
             returnBookMemberChoiceFLP = new FlowLayoutPanel();
             bt_goBack = new Button();
+            memberCheckoutBookPanel = new Panel();
+            memberCheckoutLibraryFLP = new FlowLayoutPanel();
+            memberCheckoutBookFLP = new FlowLayoutPanel();
+            bt_memberCheckoutSubmit = new Button();
             homePanel.SuspendLayout();
             registerBookPanel.SuspendLayout();
             registerMemberPanel.SuspendLayout();
@@ -100,6 +104,7 @@
             viewMemberCheckedOutBooksPanel.SuspendLayout();
             memberCheckedOutBooksDisplay.SuspendLayout();
             memberReturnBookPanel.SuspendLayout();
+            memberCheckoutBookPanel.SuspendLayout();
             SuspendLayout();
             // 
             // introLabel
@@ -751,11 +756,50 @@
             bt_goBack.UseVisualStyleBackColor = false;
             bt_goBack.Click += bt_goBack_Click;
             // 
+            // memberCheckoutBookPanel
+            // 
+            memberCheckoutBookPanel.BackColor = SystemColors.Desktop;
+            memberCheckoutBookPanel.Controls.Add(bt_memberCheckoutSubmit);
+            memberCheckoutBookPanel.Controls.Add(memberCheckoutBookFLP);
+            memberCheckoutBookPanel.Controls.Add(memberCheckoutLibraryFLP);
+            memberCheckoutBookPanel.Dock = DockStyle.Fill;
+            memberCheckoutBookPanel.Location = new Point(0, 0);
+            memberCheckoutBookPanel.Name = "memberCheckoutBookPanel";
+            memberCheckoutBookPanel.Size = new Size(800, 451);
+            memberCheckoutBookPanel.TabIndex = 3;
+            // 
+            // memberCheckoutLibraryFLP
+            // 
+            memberCheckoutLibraryFLP.Location = new Point(21, 14);
+            memberCheckoutLibraryFLP.Name = "memberCheckoutLibraryFLP";
+            memberCheckoutLibraryFLP.Size = new Size(299, 417);
+            memberCheckoutLibraryFLP.TabIndex = 0;
+            // 
+            // memberCheckoutBookFLP
+            // 
+            memberCheckoutBookFLP.Location = new Point(329, 15);
+            memberCheckoutBookFLP.Name = "memberCheckoutBookFLP";
+            memberCheckoutBookFLP.Size = new Size(311, 417);
+            memberCheckoutBookFLP.TabIndex = 1;
+            // 
+            // bt_memberCheckoutSubmit
+            // 
+            bt_memberCheckoutSubmit.BackColor = SystemColors.Desktop;
+            bt_memberCheckoutSubmit.ForeColor = SystemColors.ButtonFace;
+            bt_memberCheckoutSubmit.Location = new Point(671, 211);
+            bt_memberCheckoutSubmit.Name = "bt_memberCheckoutSubmit";
+            bt_memberCheckoutSubmit.Size = new Size(94, 29);
+            bt_memberCheckoutSubmit.TabIndex = 2;
+            bt_memberCheckoutSubmit.Text = "Checkout";
+            bt_memberCheckoutSubmit.UseVisualStyleBackColor = false;
+            bt_memberCheckoutSubmit.Click += bt_memberCheckoutSubmit_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 451);
+            Controls.Add(memberCheckoutBookPanel);
             Controls.Add(bt_goBack);
             Controls.Add(memberReturnBookPanel);
             Controls.Add(memberInfoPanel);
@@ -795,6 +839,7 @@
             memberCheckedOutBooksDisplay.ResumeLayout(false);
             memberCheckedOutBooksDisplay.PerformLayout();
             memberReturnBookPanel.ResumeLayout(false);
+            memberCheckoutBookPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -856,5 +901,9 @@
         private FlowLayoutPanel returnBookMemberChoiceFLP;
         private Button bt_returnBookMemberSubmit;
         private Button bt_goBack;
+        private Panel memberCheckoutBookPanel;
+        private Button bt_memberCheckoutSubmit;
+        private FlowLayoutPanel memberCheckoutBookFLP;
+        private FlowLayoutPanel memberCheckoutLibraryFLP;
     }
 }
