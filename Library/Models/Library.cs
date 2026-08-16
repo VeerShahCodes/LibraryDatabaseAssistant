@@ -2,13 +2,13 @@
 {
     public class Library
     {
-        public int id { get; set; }
-        public string location { get; set; }
+        int LibraryID { get; set; }
+        string Name { get; set; }
 
-        public Library(int id, string location)
+        public Library (int id, string name)
         {
-            this.id = id;
-            this.location = location;
+            LibraryID = id;
+            Name = name;
         }
     }
 }

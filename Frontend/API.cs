@@ -10,42 +10,42 @@ namespace Frontend
 {
     public class API
     {
-        public async Task AddBookToSystem(string title, string author, string genre)
-        {
+        //public async Task AddBookToSystem(string title, string author, string genre)
+        //{
             
-            using (WebClient client = new WebClient())
-            {   
+        //    using (WebClient client = new WebClient())
+        //    {   
                 
-                try
-                {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/AddBookToSystem?title={title}&author={author}&genre={genre}", title);                    
-                    Console.WriteLine($"Response from API: {result}");
-                }
-                catch (WebException exception)
-                {
-                    Console.WriteLine($"Error: {exception.Message}");
-                }
-            }
+        //        try
+        //        {
+        //            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+        //            string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/AddBookToSystem?title={title}&author={author}&genre={genre}", title);                    
+        //            Console.WriteLine($"Response from API: {result}");
+        //        }
+        //        catch (WebException exception)
+        //        {
+        //            Console.WriteLine($"Error: {exception.Message}");
+        //        }
+        //    }
 
-        }
+        //}
 
-        public async Task RegisterMember(string name)
-        {
-            using (WebClient client = new WebClient())
-            {
-                try
-                {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/RegisterMember?name={name}", name);
-                    Console.WriteLine($"Response from API: {result}");
-                }
-                catch (WebException exception)
-                {
-                    Console.WriteLine($"Error: {exception.Message}");
-                }
-            }
-        }
+        //public async Task RegisterMember(string name)
+        //{
+        //    using (WebClient client = new WebClient())
+        //    {
+        //        try
+        //        {
+        //            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+        //            string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/RegisterMember?name={name}", name);
+        //            Console.WriteLine($"Response from API: {result}");
+        //        }
+        //        catch (WebException exception)
+        //        {
+        //            Console.WriteLine($"Error: {exception.Message}");
+        //        }
+        //    }
+        //}
 
         public async Task RegisterLibrary(string location)
         {
@@ -121,43 +121,43 @@ namespace Frontend
             }
         }
 
-        public async Task AddBookToLibrary(int book_id, int library_id)
-        {
+        //public async Task AddBookToLibrary(int book_id, int library_id)
+        //{
 
-            using (WebClient client = new WebClient())
-            {
-                try
-                {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/AddBookToLibrary?library_id={library_id}&book_id={book_id}", ".");
-                    Console.WriteLine($"Response from API: {result}");
-                }
-                catch (WebException exception)
-                {
-                    Console.WriteLine($"Error: {exception.Message}");
-                }
-            }
-        }
+        //    using (WebClient client = new WebClient())
+        //    {
+        //        try
+        //        {
+        //            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+        //            string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/AddBookToLibrary?library_id={library_id}&book_id={book_id}", ".");
+        //            Console.WriteLine($"Response from API: {result}");
+        //        }
+        //        catch (WebException exception)
+        //        {
+        //            Console.WriteLine($"Error: {exception.Message}");
+        //        }
+        //    }
+        //}
 
-        public async Task<List<LibraryBook>> GetAvailableBooksByLibrary(int library_id)
-        {
-            using (WebClient client = new WebClient())
-            {
-                List<LibraryBook> books = new List<LibraryBook>();
-                try
-                {
-                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetAvailableBooksByLibrary?library_id={library_id}");
-                    books = JsonSerializer.Deserialize<List<LibraryBook>>(result);
-                    Console.WriteLine($"reponse from api: {result}");
-                    return books;
-                }
-                catch
-                {
-                    Console.WriteLine("Error: Unable to get available books from library.");
-                }
-                return books;
-            }
-        }
+        //public async Task<List<LibraryBook>> GetAvailableBooksByLibrary(int library_id)
+        //{
+        //    using (WebClient client = new WebClient())
+        //    {
+        //        List<LibraryBook> books = new List<LibraryBook>();
+        //        try
+        //        {
+        //            string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetAvailableBooksByLibrary?library_id={library_id}");
+        //            books = JsonSerializer.Deserialize<List<LibraryBook>>(result);
+        //            Console.WriteLine($"reponse from api: {result}");
+        //            return books;
+        //        }
+        //        catch
+        //        {
+        //            Console.WriteLine("Error: Unable to get available books from library.");
+        //        }
+        //        return books;
+        //    }
+        //}
 
         public async Task<Book> GetBookById(int book_id)
         {
@@ -180,44 +180,44 @@ namespace Frontend
             return null;
         }
 
-        public async Task CheckoutBook(int member_id, int book_id, int library_id)
-        {
-            using (WebClient client = new WebClient())
-            {
-                try
-                {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/CheckoutBook?book_id={book_id}&member_id={member_id}&library_id={library_id}", "a");
-                    Console.WriteLine($"Response from API: {result}");
-                }
-                catch (WebException exception)
-                {
-                    Console.WriteLine($"Error: {exception.Message}");
-                }
-            }
-        }
+        //public async Task CheckoutBook(int member_id, int book_id, int library_id)
+        //{
+        //    using (WebClient client = new WebClient())
+        //    {
+        //        try
+        //        {
+        //            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+        //            string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/CheckoutBook?book_id={book_id}&member_id={member_id}&library_id={library_id}", "a");
+        //            Console.WriteLine($"Response from API: {result}");
+        //        }
+        //        catch (WebException exception)
+        //        {
+        //            Console.WriteLine($"Error: {exception.Message}");
+        //        }
+        //    }
+        //}
 
-        public async Task<List<MemberLibraryBook>> GetCheckedOutBooksByLibrary(int library_id)
-        {
-            List<MemberLibraryBook> checkedOutBooks = new List<MemberLibraryBook>();
+        //public async Task<List<MemberLibraryBook>> GetCheckedOutBooksByLibrary(int library_id)
+        //{
+        //    List<MemberLibraryBook> checkedOutBooks = new List<MemberLibraryBook>();
 
-            using (WebClient client = new WebClient())
-            {
-                try
-                {
-                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetCheckedOutBooksByLibrary?library_id={library_id}");
-                    checkedOutBooks = JsonSerializer.Deserialize<List<MemberLibraryBook>>(result);
-                    Console.WriteLine($"reponse from api: {result}");
-                    return checkedOutBooks;
-                }
-                catch
-                {
-                    Console.WriteLine("Error: Unable to retrieve checked out books.");
-                }
-            }
+        //    using (WebClient client = new WebClient())
+        //    {
+        //        try
+        //        {
+        //            string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetCheckedOutBooksByLibrary?library_id={library_id}");
+        //            checkedOutBooks = JsonSerializer.Deserialize<List<MemberLibraryBook>>(result);
+        //            Console.WriteLine($"reponse from api: {result}");
+        //            return checkedOutBooks;
+        //        }
+        //        catch
+        //        {
+        //            Console.WriteLine("Error: Unable to retrieve checked out books.");
+        //        }
+        //    }
 
-            return checkedOutBooks;
-        }
+        //    return checkedOutBooks;
+        //}
 
         public async Task<Member> GetMemberById(int member_id)
         {
@@ -258,43 +258,43 @@ namespace Frontend
             return null;
         }
 
-        public async Task<List<MemberLibraryBook>> GetCheckedOutBooksByMember(int member_id)
-        {
-            List<MemberLibraryBook> checkedOutBooks = new List<MemberLibraryBook>();
+        //public async Task<List<MemberLibraryBook>> GetCheckedOutBooksByMember(int member_id)
+        //{
+        //    List<MemberLibraryBook> checkedOutBooks = new List<MemberLibraryBook>();
 
-            using (WebClient client = new WebClient())
-            {
-                try
-                {
-                    string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetCheckedOutBooksByMember?member_id={member_id}");
-                    checkedOutBooks = JsonSerializer.Deserialize<List<MemberLibraryBook>>(result);
-                    Console.WriteLine($"reponse from api: {result}");
-                    return checkedOutBooks;
-                }
-                catch
-                {
-                    Console.WriteLine("Error: Unable to retrieve checked out books.");
-                }
-            }
+        //    using (WebClient client = new WebClient())
+        //    {
+        //        try
+        //        {
+        //            string result = await client.DownloadStringTaskAsync($"http://localhost:5062/Library/GetCheckedOutBooksByMember?member_id={member_id}");
+        //            checkedOutBooks = JsonSerializer.Deserialize<List<MemberLibraryBook>>(result);
+        //            Console.WriteLine($"reponse from api: {result}");
+        //            return checkedOutBooks;
+        //        }
+        //        catch
+        //        {
+        //            Console.WriteLine("Error: Unable to retrieve checked out books.");
+        //        }
+        //    }
 
-            return checkedOutBooks;
-        }
+        //    return checkedOutBooks;
+        //}
 
-        public async Task ReturnBook(int member_id, int book_id, int library_id, int mlbId)
-        {
-            using (WebClient client = new WebClient())
-            {
-                try
-                {
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/ReturnBook?member_id={member_id}&book_id={book_id}&library_id={library_id}&mlbId={mlbId}", "a");
-                    Console.WriteLine($"Response from API: {result}");
-                }
-                catch (WebException exception)
-                {
-                    Console.WriteLine($"Error: {exception.Message}");
-                }
-            }
-        }
+        //public async Task ReturnBook(int member_id, int book_id, int library_id, int mlbId)
+        //{
+        //    using (WebClient client = new WebClient())
+        //    {
+        //        try
+        //        {
+        //            client.Headers[HttpRequestHeader.ContentType] = "application/json";
+        //            string result = await client.UploadStringTaskAsync($"http://localhost:5062/Library/ReturnBook?member_id={member_id}&book_id={book_id}&library_id={library_id}&mlbId={mlbId}", "a");
+        //            Console.WriteLine($"Response from API: {result}");
+        //        }
+        //        catch (WebException exception)
+        //        {
+        //            Console.WriteLine($"Error: {exception.Message}");
+        //        }
+        //    }
+        //}
     }
 }

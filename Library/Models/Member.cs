@@ -2,13 +2,19 @@
 {
     public class Member
     {
-        public int id { get; set; }
-        public string name { get; set; }
+        public int MemberID { get; set; }
+        public string Username { get; set; }
+        public string PasswordHash { get; set; }
+        public int Fees { get; set; }
+        public byte MemberType { get; set; }
 
-        public Member(int id, string name)
+        public Member (int memberID, string username, string passwordHash, int fees, byte memberType)
         {
-            this.id = id;
-            this.name = name;
+            MemberID = memberID;
+            Username = username;
+            PasswordHash = passwordHash;
+            Fees = fees;
+            MemberType = memberType;
         }
     }
 }
