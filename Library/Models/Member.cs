@@ -4,15 +4,15 @@
     {
         public int MemberID { get; set; }
         public string Username { get; set; }
-        public string PasswordHash { get; set; }
-        public int Fees { get; set; }
+        public string Password { get; set; }
+        public double Fees { get; set; }
         public byte MemberType { get; set; }
 
-        public Member (int memberID, string username, string passwordHash, int fees, byte memberType)
+        public Member (int memberID, string username, string password, double fees, byte memberType)
         {
             MemberID = memberID;
             Username = username;
-            PasswordHash = passwordHash;
+            Password = password;
             Fees = fees;
             MemberType = memberType;
         }

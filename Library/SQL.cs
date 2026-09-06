@@ -452,6 +452,39 @@ namespace Library
             return success;
         }
 
+        public bool AddAuthorsToSeries(int author_id, int series_id, out object id)
+        {
+            string query = "usp_AddAuthorsToSeries";
+            id = -1;
+
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@AuthorID", author_id);
+            cmd.Parameters.AddWithValue("@SeriesID", series_id);
+
+            bool success = ExecuteNonQuery(cmd);
+
+            if(success)
+            {
+                GetATSID(author_id, series_id, out id);
+                return true;
+            }
+
+            return false;
+        }
+        public bool GetATSID(int authorID, int seriesID, out object id)
+        {
+            id = -1;
+            string query = "usp_GetATSID";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType= CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@AuthorID", authorID);
+            cmd.Parameters.AddWithValue("@SeriesID", seriesID);
+            bool success = ExecuteScalar(cmd, out id);
+            return success;
+        }
+
+
         public bool GetBTSID(int bookId, int seriesId, out object id)
         {
             id = -1;
@@ -504,46 +537,50 @@ namespace Library
             salt = saltObj.ToString();
             return success;
         }
-        //public List<LibraryBook> GetAvailableBooksByLibrary(int library_id)
-        //{
-        //    List<LibraryBook> books = new List<LibraryBook>();
-        //    string query = "usp_GetAvailableBooksByLibrary";
-        //    SqlCommand cmd = new SqlCommand(query, connection);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("@library_id", library_id);
-        //    DataTable table;
-        //    bool success = DataAdapter(cmd, out table);
-        //    if(success)
-        //    {
-        //        for(int i = 0; i <  table.Rows.Count; i++)
-        //        {
-        //            books.Add(new LibraryBook((int)table.Rows[i][0], (int)table.Rows[i][1], (int)table.Rows[i][2], (int)table.Rows[i][3]));
-        //        }
-        //    }
-        //    return books;
-        //}
-        //public bool GetBookByID(int book_id, out string title, out string author, out string genre)
-        //{
-        //    string query = "usp_GetBookByID";
-        //    SqlCommand cmd = new SqlCommand(query, connection);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("@book_id", book_id);
+        public List<BooksToLibraries> GetAvailableBooksByLibrary(int library_id)
+        {
+            List<BooksToLibraries> books = new List<BooksToLibraries>();
+            string query = "usp_GetAvailableBooksByLibrary";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@library_id", library_id);
+            DataTable table;
+            bool success = DataAdapter(cmd, out table);
+            if(success)
+            {
+                for(int i = 0; i < table.Rows.Count; i++)
+                {
+                    int BTLID = (int)table.Rows[i][0];
+                    int BookID = (int)table.Rows[i][1];
+                    int LibraryID = (int)table.Rows[i][2];
+                    int Count = (int)table.Rows[i][3];
+                    books.Add(new BooksToLibraries(BTLID, BookID, LibraryID, Count));
+                }
+            }
+            return books;
+        }
 
-        //    DataTable table;
-        //    bool success = DataAdapter(cmd, out table);
+        public bool GetBookByID(int book_id, out string title, out string description)
+        {
+            string query = "usp_GetBookByID";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@BookID", book_id);
+            DataTable table;
+            bool success = DataAdapter(cmd, out table); 
+            if(success)
+            {
+                title = (string)table.Rows[0][1];
+                description = (string)table.Rows[0][2];
+                return true;
+            }
+            title = "";
+            description = "";
+            return false;
+        }
 
-        //    if(success)
-        //    {
-        //        title = (string)table.Rows[0][0];
-        //        author = (string)table.Rows[0][1];
-        //        genre = (string)table.Rows[0][2];
-        //        return true;
-        //    }
-        //    title = "";
-        //    author = "";
-        //    genre = "";
-        //    return false;
-        //}
+        
+
         //public bool GetBooksByAuthorFromLibrary (string author, int library_id, out List<int> ids)
         //{
         //    ids = new List<int>();
@@ -561,7 +598,7 @@ namespace Library
         //        {
         //            ids.Add((int)table.Rows[i][0]);
         //        }
-                
+
         //    }
         //    return success;
 
@@ -639,23 +676,31 @@ namespace Library
             name = (string)val;
             return success;
         }
-        //public bool GetMemberInfoByID (int id, out string legalName)
-        //{
-        //    string query = "usp_GetMemberInfoByID";
-        //    SqlCommand cmd = new SqlCommand(query, connection);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("@member_id", id);
-        //    object val;
-        //    bool success = ExecuteScalar(cmd, out val);
-        //    if(success)
-        //    {
-        //        legalName = (string)val;
-        //        return true;
-        //    }
-        //    legalName = "";
-        //    return false;
 
-        //}
+        public bool GetMemberInfoByID(int member_id, out string username, out double fees, out byte memberType)
+        {
+            string query = "usp_GetMemberInfoByID";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@MemberID", member_id);
+
+            DataTable table;
+            bool success = DataAdapter(cmd, out table);
+
+            if(success)
+            {
+                username = (string)table.Rows[0][1];
+                fees = (double)table.Rows[0][2];
+                memberType = (byte)table.Rows[0][3];
+                return true;
+
+            }
+            username = "";
+            fees = -1;
+            memberType = 0;
+            return false;
+        }
+
 
         //public List<Member> GetMembers()
         //{
